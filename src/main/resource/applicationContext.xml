@@ -1,0 +1,80 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!--扫描dao层和 service层-->
+    <context:component-scan base-package="com.hbnu">
+        <!-- 排除MVC-->
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!--读取db.properties信息-->
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+    <!--配制数据源-->
+    <bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${Jdbc.driver}"/>
+        <property name="jdbcUrl" value="${Jdbc.url}"/>
+        <property name="user" value="${Jdbc.username}"/>
+        <property name="password" value="${Jdbc.password}"/>
+    </bean>
+
+
+    <!--把IOC 交给 sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="comboPooledDataSource"/>
+<!--加载mybatis-config配置-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+    </bean>
+
+    <!-- 扫描包 dao层 xml -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.hbnu.dao"/>
+    </bean>
+
+
+    <!--配置事务管理-->
+    <!-- 配置事务管理器-->
+    <!-- 配置事务管理器，依赖数据源 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="comboPooledDataSource"/>
+    </bean>
+    <!--开启注解驱动-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--对应的方法会实行事务控制-->
+<!--    <tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+<!--        <tx:attributes>-->
+<!--            <tx:method name="get*" read-only="true" propagation="SUPPORTS"/>-->
+<!--            <tx:method name="find*" read-only="true" propagation="SUPPORTS"/>-->
+<!--            <tx:method name="select*" read-only="true" propagation="SUPPORTS"/>-->
+<!--            <tx:method name="add*"/>-->
+<!--            <tx:method name="save*"/>-->
+<!--            <tx:method name="insert*"/>-->
+<!--            <tx:method name="update*"/>-->
+<!--            <tx:method name="delete*"/>-->
+<!--            <tx:method name="modify*"/>-->
+<!--        </tx:attributes>-->
+<!--    </tx:advice>-->
+
+<!-- 配置-->
+<!--    <aop:config >-->
+<!--        <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.hbnu.service..*.*(..))"/>-->
+<!--    </aop:config>-->
+
+</beans>
+

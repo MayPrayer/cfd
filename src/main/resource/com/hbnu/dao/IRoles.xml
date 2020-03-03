@@ -1,0 +1,10 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbnu.dao.IRoles">
+<!--根据userid 查找所有信息-->
+    <select id="selectByUserid" parameterType="com.hbnu.entity.Roles" resultType="com.hbnu.entity.Roles">
+        select  * from roles where userid =#{userid}
+    </select>
+
+</mapper>
