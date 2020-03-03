@@ -22,5 +22,10 @@
         delete from  users where id=#{id}
     </select>
 
+<!--模糊查询-->
+    <select id="selectLikeUser" resultType="com.hbnu.entity.Users" parameterType="String">
+        select * from users where account like '%${account}%'
+    </select>
+
 
 </mapper>

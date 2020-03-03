@@ -40,7 +40,7 @@
                                 <div class="layui-input-inline">
                                     <input type="text" id="codeLike" name="codeLike" placeholder="请输入账户名" autocomplete="off" class="layui-input">
                                 </div>
-                                <button class="layui-btn" οnclick="search()">搜索</button>
+                                <button class="layui-btn" name="search">搜索</button>
                             </di>
                         </div>
                     </div>

@@ -102,6 +102,17 @@ public class UserInfoOpController {
         return result;
     }
 
+    @RequestMapping("selectlikeuser")
+    @ResponseBody
+    public Result selectLikeUser(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize,@RequestParam("account")String account) {
+        System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize+"\t模糊查询词为："+account);
+        Result result = Result.success();
+        PageInfo pageInfo = iqs.selectLikeUser(pageNum, pageSize,account);
+        result.setCount((int) pageInfo.getTotal());
+        result.setData(pageInfo);
+        return result;
+    }
+
 
     @RequestMapping("showuser")
     public String showuser() {
@@ -117,4 +128,6 @@ public class UserInfoOpController {
         ius.deleteUserById(id);
         return result;
     }
+
+
 }

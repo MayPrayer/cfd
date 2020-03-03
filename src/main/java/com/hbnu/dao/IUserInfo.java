@@ -28,4 +28,7 @@ public interface IUserInfo {
     //   根据id删除用户
     void deleteUserById(int id);
 
+//    根据账户名模糊查询
+    List<Users>  selectLikeUser(@Param("account")String account);
+
 }

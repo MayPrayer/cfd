@@ -15,6 +15,7 @@ import com.hbnu.entity.Users;
 public interface IQryService {
 
      PageInfo findAll(int pageNum,int pageSize);
+     PageInfo selectLikeUser(int pageNum,int pageSize,String account);
      Users selectByAccountAndPassword(String account, String pwd);
      Roles selectByUserid(int userid);
 

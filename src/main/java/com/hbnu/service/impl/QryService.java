@@ -37,6 +37,14 @@ public class QryService implements IQryService {
         return pageInfo;
     }
 
+    @Override
+    public PageInfo selectLikeUser(int pageNum, int pageSize, String account) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Users> list = users.selectLikeUser(account);
+        PageInfo pageInfo=new PageInfo(list);
+        return pageInfo;
+    }
+
 
     @Override
     public Users selectByAccountAndPassword(String account, String pwd) {
