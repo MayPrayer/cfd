@@ -3,6 +3,9 @@ package com.hbnu.service;
 import com.github.pagehelper.PageInfo;
 import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * ClassName: IQryService <br/>
@@ -18,5 +21,6 @@ public interface IQryService {
      PageInfo selectLikeUser(int pageNum,int pageSize,String account);
      Users selectByAccountAndPassword(String account, String pwd);
      Roles selectByUserid(int userid);
+     List<Users> selectByAccount(String account);
 
 }

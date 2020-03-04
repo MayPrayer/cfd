@@ -1,6 +1,7 @@
 package com.hbnu.service.impl;
 
 import com.hbnu.dao.IUserInfo;
+import com.hbnu.entity.Users;
 import com.hbnu.service.IUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,12 @@ public class UpdateService implements IUpdateService {
     @Override
     public void deleteUserById(int id) {
         users.deleteUserById(id);
+    }
+
+    @Override
+    public int insertOneUser(Users user) {
+        int code = users.insertOneUser(user);
+        System.out.println("插入数据返回值为"+code);
+        return code;
     }
 }

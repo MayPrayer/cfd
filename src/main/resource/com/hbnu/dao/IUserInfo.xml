@@ -27,5 +27,14 @@
         select * from users where account like '%${account}%'
     </select>
 
+<!--根据账户名查询用户信息-->
+    <select id="selectByAccount" resultType="com.hbnu.entity.Users">
+        select * from users where account=#{account}
+    </select>
+
+<!--    增加用户 字段中有关键字 用反引号-->
+    <insert id="insertOneUser" parameterType="com.hbnu.entity.Users">
+    insert into users(name,account,phone,pwd,avatar,birthday,salt,secret,nickname,idcard,wechat,cardholdback,cardholdfront,`change`)values(#{name},#{account},#{phone},#{pwd},#{avatar},#{birthday},#{salt},#{secret},#{nickname},#{idcard},#{wechat},#{cardholdback},#{cardholdfront},#{change})
+    </insert>
 
 </mapper>

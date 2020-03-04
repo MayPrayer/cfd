@@ -56,5 +56,10 @@ public class QryService implements IQryService {
        return  roles.selectByUserid(userid);
     }
 
+    @Override
+    public List<Users> selectByAccount(String account) {
+        return users.selectByAccount(account);
+    }
+
 
 }

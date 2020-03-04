@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -92,6 +94,25 @@ public class UserLoginController {
     public String modifyPassword() {
         return "updatepwd";
     }
+
+
+    //验证用户名是否存在
+    @RequestMapping("/vifaccount")
+    @ResponseBody
+    public Result vifAccount(@RequestParam("account")String account) {
+//        调用服务查询是否存在用户
+        List<Users> users = iqs.selectByAccount(account);
+        System.out.println("user的信息为\n"+users);
+        if (users.isEmpty()){
+            return Result.success();
+
+        }else {
+            return Result.failed("用户已存在");
+        }
+
+    }
+
+
 }
 
 

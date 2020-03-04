@@ -35,7 +35,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="${user.avatar}" class="layui-nav-img">
-                    ${user.name}&nbsp; &nbsp;&nbsp;欢迎您!
+                    ${user.nickname}&nbsp; &nbsp;&nbsp;欢迎您!
                 </a>
             </li>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/user/delsession">注销</a></li>
@@ -51,7 +51,7 @@
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}/updateuserinfo/showpersoninfo">基础信息显示</a></dd>
                         <dd><a href="${pageContext.request.contextPath}/user/modifypwd">密码修改</a></dd>
-                        <dd><a href="javascript:;">联系方式</a></dd>
+<%--                        <dd><a href="javascript:;">联系方式</a></dd>--%>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

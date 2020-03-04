@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -84,7 +88,7 @@ public class UserInfoOpController {
         }
 //        查询角色关系
         Roles roles = iqs.selectByUserid(user.getId());
-         model.addAttribute("role",roles);
+        model.addAttribute("role", roles);
         model.addAttribute("user", user);
 //        将model对象转到personinfo页面
         return "personinfo";
@@ -104,10 +108,10 @@ public class UserInfoOpController {
 
     @RequestMapping("selectlikeuser")
     @ResponseBody
-    public Result selectLikeUser(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize,@RequestParam("account")String account) {
-        System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize+"\t模糊查询词为："+account);
+    public Result selectLikeUser(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize, @RequestParam("account") String account) {
+        System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize + "\t模糊查询词为：" + account);
         Result result = Result.success();
-        PageInfo pageInfo = iqs.selectLikeUser(pageNum, pageSize,account);
+        PageInfo pageInfo = iqs.selectLikeUser(pageNum, pageSize, account);
         result.setCount((int) pageInfo.getTotal());
         result.setData(pageInfo);
         return result;
@@ -129,5 +133,36 @@ public class UserInfoOpController {
         return result;
     }
 
+
+    //添加一位用户
+    @RequestMapping("adduser")
+    @ResponseBody
+    public Result addUser(@RequestParam("account") String account, @RequestParam("nickname") String nickname, @RequestParam("pwd") String pwd, @RequestParam("avatar") String avatar, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
+                          @RequestParam("idcard") String idcard
+    ) {
+        Users user = new Users();
+        user.setAccount(account);
+        user.setNickname(nickname);
+        user.setPwd(pwd);
+        user.setAvatar(avatar);
+        user.setName(name);
+        user.setPhone(phone);
+        user.setIdcard(idcard);
+        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        Date birth=null;
+        try {
+            birth =  df.parse(birthday);
+        }catch(Exception e){
+
+        }
+        user.setBirthday(birth);
+        int mesgcode = ius.insertOneUser(user);
+        if(mesgcode==1){
+           Result result =  Result.success();
+           result.setMessage("添加用户成功！");
+           return  result;
+        }
+        return Result.failed("添加用户失败，请检查填写信息！");
+    }
 
 }

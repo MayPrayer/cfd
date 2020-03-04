@@ -1,5 +1,7 @@
 package com.hbnu.service;
 
+import com.hbnu.entity.Users;
+
 /**
  * ClassName: IUpdate <br/>
  * Description: <br/>
@@ -13,4 +15,6 @@ public interface IUpdateService {
     void updatePwdByAccountAndPassword(String pwd ,String account);
 
     void deleteUserById(int id);
+
+    int insertOneUser(Users user);
 }
