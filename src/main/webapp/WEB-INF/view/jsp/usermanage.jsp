@@ -123,6 +123,15 @@
 <div id="edit-main" style="display: none;">
     <form class="layui-form" id="edit-form" method="post">
         <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">ID</label>
+            <div class="layui-input-block">
+            <%--设置id只读--%>
+                <input type="text" name="modifid" required style="width: 240px" lay-verify="required" placeholder="请输入ID"
+                       autocomplete="off" class="layui-input" readonly="readonly">
+                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">名 字</label>
             <div class="layui-input-block">
                 <input type="text" name="modifname" required style="width: 240px" lay-verify="required" placeholder="请输入名字"
@@ -136,15 +145,6 @@
             <div class="layui-input-block">
                 <input type="text" name="modifphone" required style="width: 240px" lay-verify="required|phone" placeholder="请输入手机号"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
-            </div>
-        </div>
-        <%--         生日--%>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">生 日</label>
-            <div class="layui-input-block">
-                <input type="text" name="modifbirthday" required style="width: 240px" lay-verify="required" placeholder="请选择生日"
-                       autocomplete="off" class="layui-input" id="updatebirthday">
                 <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
@@ -212,21 +212,5 @@
     <a class="layui-btn  layui-btn-xs" lay-event="del" style="background-color:red"><i
             class="layui-icon">&#xe640;</i></a>
 </script>
-<script type="text/javascript">
-    function createTime(v){
-        var date = new Date(v);
-        var y = date.getFullYear();
-        var m = date.getMonth()+1;
-        m = m<10?'0'+m:m;
-        var d = date.getDate();
-        d = d<10?("0"+d):d;
-        var h = date.getHours();
-        h = h<10?("0"+h):h;
-        var M = date.getMinutes();
-        M = M<10?("0"+M):M;
-        var str = y+"-"+m+"-"+d+" "+h+":"+M;
-        return str;
-    }
-</script>
-</body>
+
 </html>

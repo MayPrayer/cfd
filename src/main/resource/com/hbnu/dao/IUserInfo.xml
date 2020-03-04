@@ -32,9 +32,15 @@
         select * from users where account=#{account}
     </select>
 
-<!--    增加用户 字段中有关键字 用反引号-->
-    <insert id="insertOneUser" parameterType="com.hbnu.entity.Users">
+<!--    增加用户 字段中有关键字 用反引号   时间类型需要指定date-->
+    <insert id="insertOneUser" parameterType="com.hbnu.entity.Users" >
     insert into users(name,account,phone,pwd,avatar,birthday,salt,secret,nickname,idcard,wechat,cardholdback,cardholdfront,`change`)values(#{name},#{account},#{phone},#{pwd},#{avatar},#{birthday},#{salt},#{secret},#{nickname},#{idcard},#{wechat},#{cardholdback},#{cardholdfront},#{change})
     </insert>
+
+<!--修改用户信息 -->
+    <update id="updateOneUser" parameterType="com.hbnu.entity.Users">
+        update  users set name=#{name},phone=#{phone},nickname=#{nickname} where id=#{id}
+    </update>
+
 
 </mapper>

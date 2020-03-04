@@ -17,4 +17,6 @@ public interface IUpdateService {
     void deleteUserById(int id);
 
     int insertOneUser(Users user);
+
+    int updateOneUser(String name,String phone,String nickname,int id);
 }

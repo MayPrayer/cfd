@@ -37,4 +37,7 @@ public interface IUserInfo {
 
     //   添加用户
     int insertOneUser(Users user);
+
+//    更新用户
+    int updateOneUser(@Param("name")String name,@Param("phone")String phone,@Param("nickname")String nickname,@Param("id")int id);
 }

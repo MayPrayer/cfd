@@ -148,7 +148,8 @@ public class UserInfoOpController {
         user.setName(name);
         user.setPhone(phone);
         user.setIdcard(idcard);
-        DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+        System.out.println("生日为"+birthday);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date birth=null;
         try {
             birth =  df.parse(birthday);
@@ -163,6 +164,16 @@ public class UserInfoOpController {
            return  result;
         }
         return Result.failed("添加用户失败，请检查填写信息！");
+    }
+
+//   编辑用户信息
+    @RequestMapping("updateuser")
+    @ResponseBody
+    public Result editUser(@RequestParam("modifname")String name ,@RequestParam("modifphone")String phone,@RequestParam("modifnickname")String nickname,@RequestParam("modifid")int id){
+        ius.updateOneUser(name,phone,nickname,id);
+            Result result =  Result.success();
+            result.setMessage("更新用户成功！");
+            return  result;
     }
 
 }

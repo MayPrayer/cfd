@@ -38,4 +38,11 @@ public class UpdateService implements IUpdateService {
         System.out.println("插入数据返回值为"+code);
         return code;
     }
+
+    @Override
+    public int updateOneUser(String name, String phone, String nickname,int id) {
+        int code=users.updateOneUser(name,phone,nickname,id);
+        System.out.println("更新数据返回值为"+code);
+        return 0;
+    }
 }

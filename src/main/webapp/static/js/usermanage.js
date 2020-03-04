@@ -114,10 +114,11 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
         if (layEvent === 'edit') {
             //实现编辑功能
             //填充表格数据
+
             $("input[name='modifname']").val(data.name);
             $("input[name='modifphone']").val(data.phone);
-            $("input[name='modifbirthday']").val(data.birthday);
-            $("input[name='modifname']").val(data.name);
+            $("input[name='modifnickname']").val(data.nickname);
+            $("input[name='modifid']").val(data.id);
             edituser();
 
         } else if (layEvent === 'del') {
@@ -152,7 +153,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             title: "编辑用户",
             closebtn: false,
             shift: 2,
-            area: ['498px', '354px'],
+            area: ['400px', '400px'],
             shadeclose: true,
             // btn: ['新增', '取消'],
             // btnalign: 'c',
@@ -177,9 +178,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
 
     laydate.render({
         elem: '#birthday', //指定元素
-    });
-    laydate.render({
-        elem: '#updatebirthday', //指定元素
+        type: 'datetime'
     });
 
 
