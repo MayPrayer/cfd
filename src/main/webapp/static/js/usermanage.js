@@ -1,7 +1,7 @@
-layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function () {
+layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], function () {
     //赋值引用
     var element = layui.element, layer = layui.layer, form = layui.form, $ = layui.jquery, table = layui.table,
-        laydate = layui.laydate;
+        laydate = layui.laydate, util = layui.util;
     //获取项目根路径
     var path = $("input[name='path']").val();
     //获取json数据路径
@@ -9,7 +9,8 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
     var delpath = path + "/updateuserinfo/deleteuser";
     var likepath = path + "/updateuserinfo/selectlikeuser";
     var addpath = path + "/updateuserinfo/adduser";
-    var vifpath = path + "/user/vifaccount"
+    var vifpath = path + "/user/vifaccount";
+    var updatepath = path + "/updateuserinfo/updateuser";
 
 
     //没进行任何操作时的表格
@@ -26,7 +27,11 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
             {field: 'name', title: '名字', sort: true},
             {field: 'account', title: '账户', sort: true},
             {field: 'phone', title: '手机号', sort: true},
-            {field: 'birthday', title: '生日', sort: true},
+            {
+                field: 'birthday', title: '生日', sort: true, templet: function (d) {
+                    return util.toDateString(d.birthday, "yyyy-MM-dd HH:mm:ss")
+                }
+            },
             {field: 'nickname', title: '昵称', sort: true},
             //操作栏
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
@@ -67,7 +72,15 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
                     {field: 'name', title: '名字', sort: true},
                     {field: 'account', title: '账户', sort: true},
                     {field: 'phone', title: '手机号', sort: true},
-                    {field: 'birthday', title: '生日', sort: true},
+                    {
+                        field: 'birthday',
+                        title: '生日',
+                        sort: true,
+                        //将json中不同格式的数据转换成正常格式
+                        templet: function (d) {
+                            return util.toDateString(d.birthday, "yyyy-MM-dd HH:mm:ss")
+                        }
+                    },
                     {field: 'nickname', title: '昵称', sort: true},
                     //操作栏
                     {fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
@@ -98,8 +111,15 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
         var data = obj.data,//获得当前行数据
             layEvent = obj.event; //获得 lay-event 对应的值
         console.log("看下当前行数据的内容" + data);
-        if (layEvent === 'detail') {
-            layer.msg('查看操作');
+        if (layEvent === 'edit') {
+            //实现编辑功能
+            //填充表格数据
+            $("input[name='modifname']").val(data.name);
+            $("input[name='modifphone']").val(data.phone);
+            $("input[name='modifbirthday']").val(data.birthday);
+            $("input[name='modifname']").val(data.name);
+            edituser();
+
         } else if (layEvent === 'del') {
             layer.confirm('真的要删除么？', function (index) {
                 //obj.del(); //删除对应行（tr）的DOM结构
@@ -123,6 +143,28 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
          }*/
     });
 
+    //编辑用户
+    function edituser() {
+        alert("我被执行了");
+        //发送ajax请求获取当前所有
+        layer.open({
+            type: 1,
+            title: "编辑用户",
+            closebtn: false,
+            shift: 2,
+            area: ['498px', '354px'],
+            shadeclose: true,
+            // btn: ['新增', '取消'],
+            // btnalign: 'c',
+            content: $("#edit-main"),
+            success: function (layero, index) {
+            },
+            yes: function () {
+            }
+        });
+
+    }
+
 
     //删除记录
     function delCarouselById(id) {
@@ -134,10 +176,17 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
 
 
     laydate.render({
-        elem: '#birthday' //指定元素
+        elem: '#birthday', //指定元素
     });
+    laydate.render({
+        elem: '#updatebirthday', //指定元素
+    });
+
+
     $("button[name='adduser']").on("click", onaddbtn);
 
+
+    //添加用户页面
     function onaddbtn() {
         //页面层-自定义
         alert("我被执行了");
@@ -240,6 +289,44 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate'], function (
         $.ajax({
                 //ajax的url请求不会在url显示
                 url: addpath,
+                data: datas,
+                type: "POST",
+                //不指定dataType 会自动获取 返回值（根据对应的类型）
+                success: function (result) {
+                    alert("我被执行了！");
+                    if (result.code == '0') {
+                        // 提示添加用户成功
+                        layer.alert(result.message, {
+                                skin: 'layui-layer-molv' //样式类名
+                                , closeBtn: 0
+                            }, function (index) {
+                                //点击关闭按钮后执行的函数
+                                layer.closeAll();   //关闭所有弹窗
+                                //重新加载页面
+                                window.location.reload();
+                            }
+                        );
+                    } else {
+                        layer.msg(result.message);
+                        //    提示用户信息错误
+                    }
+                },
+                error: function () {
+                    layer.msg("当前连接数偏多，请稍后重试！");
+                }
+            }
+        );
+        return false;
+    });
+
+    //监听更新按钮
+    form.on('submit(update)', function (data) {
+        var datas = data.field;
+        console.log(datas);
+        // var action=data.form.action;
+        $.ajax({
+                //ajax的url请求不会在url显示
+                url: updatepath,
                 data: datas,
                 type: "POST",
                 //不指定dataType 会自动获取 返回值（根据对应的类型）

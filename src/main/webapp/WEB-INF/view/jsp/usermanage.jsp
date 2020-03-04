@@ -25,7 +25,7 @@
 </head>
 
 <body>
-<%--弹出表单--%>
+<%--弹出表单 新增用户--%>
 <div id="add-main" style="display: none;">
     <form class="layui-form" id="add-form" method="post">
         <%--     账户       --%>
@@ -116,6 +116,60 @@
     </form>
 </div>
 
+
+
+
+<%--弹出表单 更新用户--%>
+<div id="edit-main" style="display: none;">
+    <form class="layui-form" id="edit-form" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">名 字</label>
+            <div class="layui-input-block">
+                <input type="text" name="modifname" required style="width: 240px" lay-verify="required" placeholder="请输入名字"
+                       autocomplete="off" class="layui-input">
+                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+        </div>
+        <%--           手机号--%>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">手 机 号</label>
+            <div class="layui-input-block">
+                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required|phone" placeholder="请输入手机号"
+                       autocomplete="off" class="layui-input">
+                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+        </div>
+        <%--         生日--%>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">生 日</label>
+            <div class="layui-input-block">
+                <input type="text" name="modifbirthday" required style="width: 240px" lay-verify="required" placeholder="请选择生日"
+                       autocomplete="off" class="layui-input" id="updatebirthday">
+                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+        </div>
+    <%--        昵称--%>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">昵 称</label>
+            <div class="layui-input-block">
+                <input type="text" name="modifnickname" required style="width: 240px" lay-verify="required" placeholder="请输入昵称"
+                       autocomplete="off" class="layui-input">
+                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+        </div>
+        <%--            操作按钮--%>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="update" id="datamodif">立即修改</button>
+                <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
 <%--直接显示内容--%>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
@@ -146,6 +200,8 @@
     </div>
 </div>
 
+
+
 <input type="hidden" name="path" value="${pageContext.request.contextPath}">
 
 
@@ -156,7 +212,21 @@
     <a class="layui-btn  layui-btn-xs" lay-event="del" style="background-color:red"><i
             class="layui-icon">&#xe640;</i></a>
 </script>
-
-
+<script type="text/javascript">
+    function createTime(v){
+        var date = new Date(v);
+        var y = date.getFullYear();
+        var m = date.getMonth()+1;
+        m = m<10?'0'+m:m;
+        var d = date.getDate();
+        d = d<10?("0"+d):d;
+        var h = date.getHours();
+        h = h<10?("0"+h):h;
+        var M = date.getMinutes();
+        M = M<10?("0"+M):M;
+        var str = y+"-"+m+"-"+d+" "+h+":"+M;
+        return str;
+    }
+</script>
 </body>
 </html>
