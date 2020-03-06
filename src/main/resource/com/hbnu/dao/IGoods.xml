@@ -1,0 +1,14 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbnu.dao.IGoods">
+<!--查询所有生鲜商品-->
+    <select id="selectCurUserGoods" resultType="com.hbnu.entity.Goods">
+       select g.* from goods g ,users u , shops s where u.id=s.userid and s.id = g.shopid and u.id=#{id}
+    </select>
+<!--根据id删除产品-->
+    <delete id="delGoodById" parameterType="int">
+        delete  from  goods where id=#{id}
+    </delete>
+
+</mapper>

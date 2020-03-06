@@ -14,13 +14,12 @@ public class Goods {
     private String name;
     private String describes;
     private String img;
-    private int price;
-    private int discountprice; //折扣
+    private double price;
+    private double discountprice; //折扣
     private int sales;  //销量
     private int inventory; //库存
     private String goodsstatus; //商品状态
     private String goodstype;//商品类型
-
 
     public int getId() {
         return id;
@@ -62,19 +61,19 @@ public class Goods {
         this.img = img;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
-    public int getDiscountprice() {
+    public double getDiscountprice() {
         return discountprice;
     }
 
-    public void setDiscountprice(int discountprice) {
+    public void setDiscountprice(double discountprice) {
         this.discountprice = discountprice;
     }
 
@@ -122,7 +121,7 @@ public class Goods {
                 ", discountprice=" + discountprice +
                 ", sales=" + sales +
                 ", inventory=" + inventory +
-                ", goodsstatus=" + goodsstatus +
+                ", goodsstatus='" + goodsstatus + '\'' +
                 ", goodstype='" + goodstype + '\'' +
                 '}';
     }

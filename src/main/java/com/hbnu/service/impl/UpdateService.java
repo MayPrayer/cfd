@@ -1,5 +1,6 @@
 package com.hbnu.service.impl;
 
+import com.hbnu.dao.IGoods;
 import com.hbnu.dao.IUserInfo;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IUpdateService;
@@ -20,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UpdateService implements IUpdateService {
     @Autowired
     private IUserInfo users;
-
+    @Autowired
+    private IGoods goods;
 
     @Override
     public void updatePwdByAccountAndPassword(String pwd, String account) {
@@ -43,6 +45,13 @@ public class UpdateService implements IUpdateService {
     public int updateOneUser(String name, String phone, String nickname,int id) {
         int code=users.updateOneUser(name,phone,nickname,id);
         System.out.println("更新数据返回值为"+code);
-        return 0;
+        return code;
+    }
+
+    @Override
+    public int delGoodById(int id) {
+        int code = goods.delGoodById(id);
+        System.out.println("删除数据返回值为"+code);
+        return code;
     }
 }

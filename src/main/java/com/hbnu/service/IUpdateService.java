@@ -11,7 +11,9 @@ import com.hbnu.entity.Users;
  * @since JDK 1.8
  */
 public interface IUpdateService {
-
+/*
+* 用户服务
+* */
     void updatePwdByAccountAndPassword(String pwd ,String account);
 
     void deleteUserById(int id);
@@ -19,4 +21,10 @@ public interface IUpdateService {
     int insertOneUser(Users user);
 
     int updateOneUser(String name,String phone,String nickname,int id);
+
+/*
+* 商品服务
+* */
+    int  delGoodById(int id);
+
 }

@@ -2,8 +2,10 @@ package com.hbnu.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hbnu.dao.IGoods;
 import com.hbnu.dao.IRoles;
 import com.hbnu.dao.IUserInfo;
+import com.hbnu.entity.Goods;
 import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
@@ -26,6 +28,8 @@ public class QryService implements IQryService {
     private IUserInfo users;
     @Autowired
     private IRoles roles;
+    @Autowired
+    private IGoods goods;
 
 
     @Override
@@ -59,6 +63,18 @@ public class QryService implements IQryService {
     @Override
     public List<Users> selectByAccount(String account) {
         return users.selectByAccount(account);
+    }
+
+
+
+
+//当前用户商品信息
+    @Override
+    public PageInfo selectCurUserGoods(int pageNum, int pageSize, int id) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Goods> list = goods.selectCurUserGoods(id);
+        PageInfo pageInfo=new PageInfo(list);
+        return pageInfo;
     }
 
 

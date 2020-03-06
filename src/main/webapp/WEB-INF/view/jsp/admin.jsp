@@ -70,7 +70,7 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">商品管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">商品管理</a></dd>
+                        <dd><a href="${pageContext.request.contextPath}/curgoodsinfo/showgoods">商品管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

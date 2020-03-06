@@ -1,6 +1,7 @@
 package com.hbnu.service;
 
 import com.github.pagehelper.PageInfo;
+import com.hbnu.entity.Goods;
 import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import org.apache.ibatis.annotations.Param;
@@ -16,11 +17,13 @@ import java.util.List;
  * @since JDK 1.8
  */
 public interface IQryService {
-
+//用户服务
      PageInfo findAll(int pageNum,int pageSize);
      PageInfo selectLikeUser(int pageNum,int pageSize,String account);
      Users selectByAccountAndPassword(String account, String pwd);
      Roles selectByUserid(int userid);
      List<Users> selectByAccount(String account);
 
+//商品服务
+     PageInfo selectCurUserGoods(int pageNum,int pageSize,int id);
 }
