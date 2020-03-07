@@ -5,3 +5,8 @@
 .layui-table-page {
     text-align: center;
 }
+
+.layui-table-cell{
+    height:auto!important;
+    white-space:normal;
+}

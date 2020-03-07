@@ -184,7 +184,6 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
 
     $("button[name='adduser']").on("click", onaddbtn);
 
-
     //添加用户页面
     function onaddbtn() {
         //页面层-自定义

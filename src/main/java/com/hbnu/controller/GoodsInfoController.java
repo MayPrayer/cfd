@@ -12,9 +12,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * ClassName: GoodsInfoController <br/>
@@ -60,8 +68,13 @@ public class GoodsInfoController {
      * */
     @RequestMapping("delgood")
     @ResponseBody
-    public Result delGood() {
-        return Result.failed("删除失败");
+    public Result delGood(@RequestParam("id") int id) {
+        int code = ius.delGoodById(id);
+        if (code != 1) {
+            return Result.failed("删除失败");
+        }
+        return Result.success();
+
     }
 
 
@@ -78,7 +91,7 @@ public class GoodsInfoController {
             for (String id : ids) {
                 if (id != null && !id.equals("")) {
 //              调用删除服务
-                    int  parseid =Integer.parseInt(id);
+                    int parseid = Integer.parseInt(id);
                     ius.delGoodById(parseid);
                 }
             }
@@ -86,9 +99,63 @@ public class GoodsInfoController {
         }
 
 
-
         return Result.failed("删除失败");
-}
+    }
+
+
+    /*
+     * 上传图片
+     * */
+    @RequestMapping("upload")
+    @ResponseBody
+    public Result uploadImg(MultipartFile file,HttpServletRequest request) throws Exception {
+        String prefix="";
+        String dateStr="";
+        //保存上传
+        OutputStream out = null;
+        InputStream fileInput=null;
+        try{
+            if(file!=null){
+                String originalName = file.getOriginalFilename();
+                prefix=originalName.substring(originalName.lastIndexOf(".")+1);
+                Date date = new Date();
+//                生成唯一随机码
+                String uuid = UUID.randomUUID()+"";
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateStr = simpleDateFormat.format(date);
+//                照片保存路径
+                String filepath = "D:\\Github\\cfd\\src\\main\\webapp\\static\\upload" + "\\"+dateStr+"\\"+uuid+"." + prefix;
+
+
+                File files=new File(filepath);
+                //打印查看上传路径
+                System.out.println(filepath);
+                if(!files.getParentFile().exists()){
+                    files.getParentFile().mkdirs();
+                }
+                file.transferTo(files);
+
+                Map<String,Object> map=new HashMap<>();
+                map.put("src","/upload/"+ dateStr+"/"+uuid+"." + prefix);
+                Result result = Result.success();
+                result.setData(map);
+                return result;
+            }
+
+        }catch (Exception e){
+        }finally{
+            try {
+                if(out!=null){
+                    out.close();
+                }
+                if(fileInput!=null){
+                    fileInput.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+        return Result.success();
+    }
 
 
 }

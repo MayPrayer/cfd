@@ -1,17 +1,18 @@
-layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], function () {
+layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','layedit','upload'], function () {
     //赋值引用
     var element = layui.element, layer = layui.layer, form = layui.form, $ = layui.jquery, table = layui.table,
-        laydate = layui.laydate, util = layui.util;
+        laydate = layui.laydate, util = layui.util,layedit = layui.layedit ,upload=layui.upload;
     //获取项目根路径
     var path = $("input[name='path']").val();
     //获取json数据路径
     var realpath = path + "/curgoodsinfo/showcurgoodsinfo";
     var delpath = path + "/curgoodsinfo/delgood";
     var delmutipath = path + "/curgoodsinfo/delgoods"
-    var likepath = path + "/updateuserinfo/selectlikeuser";
-    var addpath = path + "/updateuserinfo/adduser";
-    var vifpath = path + "/user/vifaccount";
-    var updatepath = path + "/updateuserinfo/updateuser";
+    var likepath = path + "/curgoodsinfo/selectlikegoods";
+    var addpath = path + "/curgoodsinfo/addgood";
+    var vifpath = path + "/curgoodsinfo/vifgood";
+    var updatepath = path + "/curgoodsinfo/updategood";
+    var uploadpath = path+"/curgoodsinfo/upload";
 
 
     //没进行任何操作时的表格
@@ -29,31 +30,38 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             {field: 'name', title: '商品名', sort: true},
             {field: 'describes', title: '描述', sort: true},
             {
-                field: 'img', title: '图片', sort: true,
+                field: 'img', title: '图片',width: 150 ,sort: true, templet: function (d) {
+                    return '<div><img   src=' + d.img + '></div>'
+                }
             },
-            {field: 'price', title: '单价', sort: true, templet: '<div>￥:&nbsp;{{d.price}}&nbsp;元</div>'},
-            {field: 'discountprice', title: '折扣价', sort: true},
+            {field: 'price', title: '单价', sort: true, templet: '<div>￥&nbsp;{{d.price}}&nbsp;元</div>'},
+            {
+                field: 'discountprice',
+                title: '折扣价',
+                sort: true,
+                templet: '<div style="color:#FF4500;font-weight: bold>￥&nbsp;{{d.price}}&nbsp;元</div>'
+            },
             {field: 'sales', title: '销售量', sort: true},
             {field: 'inventory', title: '库存', sort: true},
             {
                 field: 'goodsstatus', title: '商品状态', sort: true, templet: function (d) {
                     if (d.goodsstatus == "上架") {
-                        return '<span style="color:#39D8B8;">' + d.goodsstatus + '</span>'
+                        return '<span style="color:#39D8B8;font-weight: bold">' + d.goodsstatus + '</span>'
                     }
                     if (d.goodsstatus == "下架") {
-                        return '<span style="color:#FF4500;">' + d.goodsstatus + '</span>'
+                        return '<span style="color:#FF4500;font-weight: bold">' + d.goodsstatus + '</span>'
                     } else {
-                        return '<span style="color:#888888;">' + '无状态' + '</span>'
+                        return '<span style="color:#888888;font-weight: bold">' + '无状态' + '</span>'
                     }
                 }
             },
             {
                 field: 'goodstype', title: '商品类型', sort: true, templet: function (d) {
                     if (d.goodstype == "生鲜") {
-                        return '<span style="color:#39D8B8;">' + d.goodstype + '</span>'
+                        return '<span style="color:#FFFF00;">' + d.goodstype + '</span>'
                     }
                     if (d.goodstype == "水果") {
-                        return '<span style="color:#FF4500;">' + d.goodstype + '</span>'
+                        return '<span style="color:#5CBB44;">' + d.goodstype + '</span>'
                     } else {
                         return '<span style="color:#888888;">' + '无状态' + '</span>'
                     }
@@ -75,6 +83,8 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             , limitName: 'pagesize' //每页数据量的参数名，默认：limit
         },
     });
+
+
 
 //    批量删除
     $("button[name='delchogoods']").on('click', function () {
@@ -112,6 +122,96 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             });
         })
     });
+
+    //单个删除
+    table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        var data = obj.data,//获得当前行数据
+            layEvent = obj.event; //获得 lay-event 对应的值
+        console.log("看下当前行数据的内容" + data);
+        if (layEvent === 'edit') {
+
+        } else if (layEvent === 'del') {
+            layer.confirm('真的要删除么？', function (index) {
+                $.post(delpath, {"id": data.id});
+                layer.close(index);
+                layer.msg("删除成功", {icon: 6});
+                //判断代码没写
+                //刷新表格
+                dataTable.reload({
+                    elem: '#goods'
+                })
+
+                //向服务端发送删除指令
+            });
+        }
+        /*else if(layEvent === 'edit'){
+          layer.msg('编辑操作');
+         }*/
+    });
+
+
+//    新增商品 (绑定事件，弹出页面)
+    $("button[name='addgood']").on("click", onaddbtn);
+    //添加用户页面
+    function onaddbtn() {
+        //页面层-自定义
+        alert("我被执行了");
+        layer.open({
+            type: 1,
+            title: "新增商品",
+            closebtn: false,
+            shift: 2,
+            area: ['800px', '600px'],
+            shadeclose: true,
+            // btn: ['新增', '取消'],
+            // btnalign: 'c',
+            content: $("#add-main"),
+            success:function(){
+                form.render();
+            },
+            yes: function () {
+            }
+        });
+    }
+
+
+
+// 图片上传
+    var uploadInst = upload.render({
+        elem: '#imgupload'
+        ,url: uploadpath
+        ,accept:'images'
+        ,size:50000
+        ,before: function(obj){
+
+            obj.preview(function(index, file, result){
+
+                $('#demo1').attr('src', result);
+            });
+        }
+        ,done: function(res){
+            //如果上传失败
+            if(res.code > 0){
+                return layer.msg('上传失败');
+            }
+            //上传成功
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #4cae4c;">上传成功</span>');
+
+            var fileupload = $(".image");
+            fileupload.attr("value",res.data.src);
+            console.log(fileupload.attr("value"));
+        }
+        ,error: function(){
+            //演示失败状态，并实现重传
+            var demoText = $('#demoText');
+            demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText.find('.demo-reload').on('click', function(){
+                uploadInst.upload();
+            });
+        }
+    });
+
 
 
 
