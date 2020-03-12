@@ -19,6 +19,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
     var dataTable = table.render({
         elem: '#goods'
         , url: realpath //数据接口
+        ,id:'inittable'
         , method: 'post'
         , page: true //开启分页
         , limit: 10
@@ -123,6 +124,10 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
         })
     });
 
+
+
+
+
     //单个删除
     table.on('tool(test)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
         var data = obj.data,//获得当前行数据
@@ -176,7 +181,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
 
 
 
-// 图片上传
+// 图片上传 并将路径(/upload/2020-03-07/b8682757-b5ce-453f-942d-798af03d3ae4.jpg)存入隐藏域
     var uploadInst = upload.render({
         elem: '#imgupload'
         ,url: uploadpath
@@ -194,10 +199,10 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
             if(res.code > 0){
                 return layer.msg('上传失败');
             }
-            //上传成功
+            //上传成功 提示信息
             var demoText = $('#demoText');
             demoText.html('<span style="color: #4cae4c;">上传成功</span>');
-
+            //获取隐藏域 ，赋值操作 ，控制台显示
             var fileupload = $(".image");
             fileupload.attr("value",res.data.src);
             console.log(fileupload.attr("value"));
@@ -210,6 +215,47 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
                 uploadInst.upload();
             });
         }
+    });
+
+
+/*
+* 监听表单
+* */
+    form.on('submit(save)', function (data) {
+        var datas = data.field;
+        console.log(datas);
+        // var action=data.form.action;
+        $.ajax({
+                //ajax的url请求不会在url显示
+                url: addpath,
+                data: datas,
+                type: "POST",
+                //不指定dataType 会自动获取 返回值（根据对应的类型）
+                success: function (result) {
+                    alert("我被执行了！");
+                    if (result.code == '0') {
+                        // 提示添加用户成功
+                        layer.alert(result.message, {
+                                skin: 'layui-layer-molv' //样式类名
+                                , closeBtn: 0
+                            }, function (index) {
+                                //点击关闭按钮后执行的函数
+                                layer.closeAll();   //关闭所有弹窗
+                                //重新加载页面
+                                window.location.reload();
+                            }
+                        );
+                    } else {
+                        layer.msg(result.message);
+                        //    提示用户信息错误
+                    }
+                },
+                error: function () {
+                    layer.msg("当前连接数偏多，请稍后重试！");
+                }
+            }
+        );
+        return false;
     });
 
 

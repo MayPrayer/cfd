@@ -34,7 +34,7 @@ import java.util.*;
  */
 
 @Controller
-@RequestMapping("curgoodsinfo")
+@RequestMapping("/curgoodsinfo")
 public class GoodsInfoController {
     @Autowired
     private IUpdateService ius;
@@ -43,7 +43,7 @@ public class GoodsInfoController {
     private IQryService iqs;
 
 
-    @RequestMapping("showcurgoodsinfo")
+    @RequestMapping("/showcurgoodsinfo")
     @ResponseBody
     public Result showCurGoodsInfo(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize, HttpSession session) {
 //       获取当前用户的信息
@@ -57,7 +57,7 @@ public class GoodsInfoController {
 
     }
 
-    @RequestMapping("showgoods")
+    @RequestMapping("/showgoods")
     public String showuser() {
         System.out.println("执行了");
         return "goods";
@@ -66,7 +66,7 @@ public class GoodsInfoController {
     /*
      *  删除单个商品
      * */
-    @RequestMapping("delgood")
+    @RequestMapping("/delgood")
     @ResponseBody
     public Result delGood(@RequestParam("id") int id) {
         int code = ius.delGoodById(id);
@@ -81,7 +81,7 @@ public class GoodsInfoController {
     /*
      * 批量删除操作
      * */
-    @RequestMapping("delgoods")
+    @RequestMapping("/delgoods")
     @ResponseBody
     public Result delGoods(@RequestParam("isStr") String isStr) {
 //        判断传过来数据不为空
@@ -106,7 +106,7 @@ public class GoodsInfoController {
     /*
      * 上传图片
      * */
-    @RequestMapping("upload")
+    @RequestMapping("/upload")
     @ResponseBody
     public Result uploadImg(MultipartFile file,HttpServletRequest request) throws Exception {
         String prefix="";

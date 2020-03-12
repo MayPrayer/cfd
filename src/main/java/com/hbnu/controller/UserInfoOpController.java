@@ -32,7 +32,7 @@ import java.util.Date;
  * @since JDK 1.8
  */
 @Controller
-@RequestMapping("updateuserinfo")
+@RequestMapping("/updateuserinfo")
 public class UserInfoOpController {
 
     @Autowired
@@ -42,7 +42,7 @@ public class UserInfoOpController {
     private IQryService iqs;
 
 
-    @RequestMapping("modifypwd")
+    @RequestMapping("/modifypwd")
     @ResponseBody
     public Result modifyPwd(HttpServletRequest request) {
         //获取账号信息和密码信息
@@ -77,7 +77,7 @@ public class UserInfoOpController {
 
     }
 
-    @RequestMapping("showpersoninfo")
+    @RequestMapping("/showpersoninfo")
     public String showPersonInfo(HttpSession session, Model model) {
 //        获取Session 拿到User
         System.out.println("session对象为" + session);
@@ -95,7 +95,7 @@ public class UserInfoOpController {
     }
 
 
-    @RequestMapping("showalluserinfo")
+    @RequestMapping("/showalluserinfo")
     @ResponseBody
     public Result showAllUserInfo(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize) {
         System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize);
@@ -106,7 +106,7 @@ public class UserInfoOpController {
         return result;
     }
 
-    @RequestMapping("selectlikeuser")
+    @RequestMapping("/selectlikeuser")
     @ResponseBody
     public Result selectLikeUser(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize, @RequestParam("account") String account) {
         System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize + "\t模糊查询词为：" + account);
@@ -118,14 +118,14 @@ public class UserInfoOpController {
     }
 
 
-    @RequestMapping("showuser")
+    @RequestMapping("/showuser")
     public String showuser() {
         return "usermanage";
     }
 
 
     // 处理通过id 删除用户请求
-    @RequestMapping("deleteuser")
+    @RequestMapping("/deleteuser")
     public Result deleteUser(@RequestParam("id") int id) {
         Result result = Result.success();
 //       调用服务删除用户
@@ -135,7 +135,7 @@ public class UserInfoOpController {
 
 
     //添加一位用户
-    @RequestMapping("adduser")
+    @RequestMapping("/adduser")
     @ResponseBody
     public Result addUser(@RequestParam("account") String account, @RequestParam("nickname") String nickname, @RequestParam("pwd") String pwd, @RequestParam("avatar") String avatar, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
                           @RequestParam("idcard") String idcard
@@ -167,7 +167,7 @@ public class UserInfoOpController {
     }
 
 //   编辑用户信息
-    @RequestMapping("updateuser")
+    @RequestMapping("/updateuser")
     @ResponseBody
     public Result editUser(@RequestParam("modifname")String name ,@RequestParam("modifphone")String phone,@RequestParam("modifnickname")String nickname,@RequestParam("modifid")int id){
         ius.updateOneUser(name,phone,nickname,id);

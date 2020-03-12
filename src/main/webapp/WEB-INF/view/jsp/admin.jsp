@@ -76,11 +76,9 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">营业额统计</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">营业额统计</a></dd>
+                        <dd><a href="${pageContext.request.contextPath}/ordermanager/income">营业额统计</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="">营业额统计</a></li>
-                <li class="layui-nav-item"><a href="">用户投诉</a></li>
             </ul>
         </div>
     </div>
