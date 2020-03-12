@@ -25,7 +25,7 @@
                         <i class="layui-icon">&#xe63c;</i>
                     </div>
                     <div class="panel_word" style="color: #1e9fff">
-                        <span>30</span>
+                        <span>${message.totalOrders}</span>
                         <cite>总订单数</cite>
                     </div>
                 </a>
@@ -38,7 +38,7 @@
                         <i class="layui-icon">&#xe770;</i>
                     </div>
                     <div class="panel_word" style="color: #FFB800;">
-                        <span>30</span>
+                        <span>${message.totalUsers}</span>
                         <cite>总用户数</cite>
                     </div>
                 </a>
@@ -51,7 +51,7 @@
                         <i class="layui-icon">&#xe65e;</i>
                     </div>
                     <div class="panel_word" style="color: #009688;">
-                        <span>30</span>
+                        <span>${message.totalIncome}</span>
                         <cite>营收金额</cite>
                     </div>
                 </a>
@@ -98,10 +98,43 @@
         //导入echarts模块
         version: 1,
         base: '${pageContext.request.contextPath}/static/js/'
-    }).use(['element', 'echarts', 'carousel'], function () {
+    }).use(['element', 'echarts', 'carousel','jquery'], function () {
             var element = layui.element;
             var echarts = layui.echarts;
             var carousel = layui.carousel;
+            var $ = layui.$;
+
+            //发送ajax
+        $.ajax({
+                //ajax的url请求不会在url显示
+                url: relpath,
+                data: datas,
+                type: "POST",
+                //不指定dataType 会自动获取 返回值（根据对应的类型）
+                success: function (result) {
+                    alert("我被执行了！");
+                    if (result.code == '0') {
+                        //    提示修改密码成功
+                        layer.alert(result.message, {
+                            skin: 'layui-layer-molv' //样式类名
+                            , closeBtn: 0
+                        });
+                        //清空表单
+                        $("#modifypwd")[0].reset();
+
+                    } else {
+                        layer.msg(result.message);
+                        //    提示用户名输入错误
+                    }
+                },
+                error: function () {
+                    layer.msg("当前连接数偏多，请稍后重试！");
+                }
+            }
+        );
+        return false;
+    });
+
             console.log(echarts);
 
         })

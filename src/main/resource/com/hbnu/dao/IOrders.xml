@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbnu.dao.IOrders">
+    <!--查询当前商铺订单总数-->
+    <select id="selectCountOrders" parameterType="com.hbnu.entity.Orders" resultType="int">
+        select count(*) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
+    </select>
+
+    <!--查询当前商铺用户总数 不重复-->
+    <select id="selectCountUsers" parameterType="com.hbnu.entity.Orders" resultType="int">
+    select  count(distinct o.userid) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
+    </select>
+
+    <!-- 查询当前商铺收入总数-->
+    <select id="selectCountIncome" parameterType="com.hbnu.entity.Orders" resultType="int">
+    select  sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
+    </select>
+
+
+
+    <!-- 查询每天的商铺订单总数-->
+    <select id="selectEveryOrders" >
+    select o.ordertime , count(*)from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime)
+    </select>
+
+
+
+    <!-- 查询每天的商铺用户总数-->
+    <select id="selectEveryUsers" >
+    select o.ordertime ,count(distinct o.userid) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime);
+    </select>
+
+    <!-- 查询每天的商铺收入总数-->
+    <select id="selectEveryIncome">
+        select sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate()group by day(o.ordertime);
+    </select>
+
+
+</mapper>
