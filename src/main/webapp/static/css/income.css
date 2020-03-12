@@ -1,0 +1,82 @@
+﻿
+.grid-demo {
+    text-align: center;
+}
+
+.panel_icon {
+    width: 40%;
+    display: inline-block;
+    padding: 22px 0;
+    float: left;
+}
+
+.panel_icon i {
+    font-size: 3em;
+    color: #fff;
+    /*旋转时间设置*/
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+}
+
+.grid-demo a:hover .panel_icon i {
+    display: inline-block;
+    /*旋转度数*/
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+}
+
+.panel_word {
+    width: 60%;
+    display: inline-block;
+    float: right;
+    margin-top: 22px;
+}
+
+.panel_word span {
+    font-size: 25px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.grid-demo a cite {
+    font-size: 16px;
+    display: block;
+    font-style: normal;
+}
+
+.grid-demo a {
+    display: block;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/*卡片画板配合轮播使用的样式start*/
+.layui-card-body .layui-carousel-ind {
+    position: absolute;
+    top: -41px !important;
+    text-align: right;
+}
+
+.layui-carousel-ind ul {
+    background: 0 0 !important;
+}
+
+.layui-carousel-ind ul li.layui-this {
+    background-color: #999;
+}
+
+.layui-carousel-ind li {
+    background-color: #e2e2e2;
+}
+.layui-carousel[lay-indicator=outside] {
+    margin-bottom: 0px;
+}
+/*卡片画板配合轮播使用的样式end*/
