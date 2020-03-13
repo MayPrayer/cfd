@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +36,10 @@ public class OrdersInfoController {
 //        调用服务 查询 总数
         Users user =(Users) session.getAttribute("userinfo");
         int id = user.getId();
+
+
+
+
         double totalIncome = iqs.selectCountIncome(id);
         int totalOrders = iqs.selectCountOrders(id);
         int totalUsers =iqs.selectCountUsers(id);
@@ -53,9 +59,38 @@ public class OrdersInfoController {
 
     @RequestMapping("/getincome")
     @ResponseBody
-    public Result getIncome() {
+    public Result getIncome(HttpSession session) {
 
-        return Result.failed("获取营业额失败");
+        //        调用服务 查询 总数
+        Users user =(Users) session.getAttribute("userinfo");
+        int id = user.getId();
+
+        List<Map> incomeList = iqs.selectEveryIncome(id);
+        List<Map> ordersList = iqs.selectEveryOrders(id);
+        List<Map> usersList = iqs.selectEveryUsers(id);
+
+        System.out.println("每日收入详情"+incomeList+'\n'+"每日用户详情"+usersList+'\n'+"每日订单详情"+ordersList);
+//        获取纵坐标
+        ArrayList<String> xAxisList = new ArrayList<>();
+        for (Map map1 :ordersList){
+            String ordertime = map1.get("ordertime").toString();
+            xAxisList.add(ordertime);
+        }
+        System.out.println("订单表横坐标"+xAxisList);
+        ArrayList<String> value = new ArrayList<>();
+
+        for (Map map2 :ordersList){
+           long count = (long) map2.get("count");
+            value.add(String.valueOf(count));
+        }
+        System.out.println("订单表值"+value);
+        ArrayList list = new ArrayList();
+        list.add(xAxisList);
+        list.add(value);
+        System.out.println("输出数据为："+list);
+        Result result = Result.success();
+        result.setData(list);
+        return  result;
     }
 
 

@@ -20,21 +20,34 @@
 
 
     <!-- 查询每天的商铺订单总数-->
-    <select id="selectEveryOrders" >
-    select o.ordertime , count(*)from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime)
+    <select id="selectEveryOrders"  resultMap="everyOrders" parameterType="int">
+    select date(o.ordertime), count(*)from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime)
     </select>
 
-
-
     <!-- 查询每天的商铺用户总数-->
-    <select id="selectEveryUsers" >
-    select o.ordertime ,count(distinct o.userid) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime);
+    <select id="selectEveryUsers" resultMap="everyUsers" parameterType="int">
+    select date(o.ordertime),count(distinct o.userid) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate() group by day(o.ordertime);
     </select>
 
     <!-- 查询每天的商铺收入总数-->
-    <select id="selectEveryIncome">
-        select sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate()group by day(o.ordertime);
+    <select id="selectEveryIncome" resultMap="everyIncome" parameterType="int">
+        select date(o.ordertime),sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate()group by day(o.ordertime);
     </select>
 
+
+    <resultMap id="everyOrders" type="java.util.Map">
+        <result column="date(o.ordertime)" property="ordertime" jdbcType="VARCHAR"/>
+        <result column="count(*)" property="count" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="everyUsers" type="java.util.Map">
+        <result column="date(o.ordertime)" property="ordertime" jdbcType="VARCHAR"/>
+        <result column="count(distinct o.userid)" property="count" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="everyIncome" type="java.util.Map">
+        <result column="date(o.ordertime)" property="ordertime" jdbcType="VARCHAR"/>
+        <result column="sum(o.amount)" property="count" jdbcType="VARCHAR"/>
+    </resultMap>
 
 </mapper>

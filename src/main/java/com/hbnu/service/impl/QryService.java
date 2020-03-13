@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: QryService <br/>
@@ -96,6 +97,27 @@ public class QryService implements IQryService {
     public int selectCountIncome(int id) {
         return orders.selectCountIncome(id);
     }
+
+    @Override
+    public List<Map> selectEveryOrders(int id) {
+        return orders.selectEveryOrders(id);
+    }
+
+    @Override
+    public List<Map> selectEveryUsers(int id) {
+        return orders.selectEveryUsers(id);
+    }
+
+    @Override
+    public List<Map> selectEveryIncome(int id) {
+        return orders.selectEveryIncome(id);
+    }
+
+
+    /*
+    * 查询每日的的用户数，输欧如，订单数
+    * */
+
 
 
 }

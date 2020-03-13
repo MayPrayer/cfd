@@ -7,6 +7,7 @@ import com.hbnu.entity.Users;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: IQryService <br/>
@@ -44,5 +45,12 @@ public interface IQryService {
      int selectCountUsers(int id);
 
      int selectCountIncome(int id);
+
+    List<Map> selectEveryOrders(int id);
+    List<Map> selectEveryUsers(int id);
+    List<Map> selectEveryIncome(int id);
+
+
+
 
 }

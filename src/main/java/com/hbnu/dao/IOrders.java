@@ -1,6 +1,7 @@
 package com.hbnu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName: IOrders <br/>
@@ -25,6 +26,10 @@ public interface IOrders {
     /*
      * 查询 每天的订单数 用户数 收入
      * */
+    List<Map> selectEveryOrders(int id);
+    List<Map> selectEveryUsers(int id);
+    List<Map> selectEveryIncome(int id);
+
 
 
 

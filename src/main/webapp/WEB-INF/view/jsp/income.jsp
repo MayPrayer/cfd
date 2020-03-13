@@ -14,9 +14,12 @@
     <link rel="stylesheet"href="${pageContext.request.contextPath}/static/css/income.css">
     <script src="${pageContext.request.contextPath}/static/js/jquery-1.10.2.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/layui/layui.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/income.js"></script>
+
 </head>
 <body>
 <div style="padding: 15px; background-color: #F2F2F2;">
+    <input type="hidden" name="path" value="${pageContext.request.contextPath}">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-xs12 layui-col-sm6 layui-col-md4 layui-col-lg4">
             <div class="grid-demo">
@@ -64,7 +67,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">商品订单</div>
                 <div class="layui-card-body">
-                    <div style="width: 100%; height: 300px;" id="Shopping">
+                    <div style="width: 100%; height: 300px;" id="order">
                     </div>
                 </div>
             </div>
@@ -98,48 +101,106 @@
         //导入echarts模块
         version: 1,
         base: '${pageContext.request.contextPath}/static/js/'
-    }).use(['element', 'echarts', 'carousel','jquery'], function () {
-            var element = layui.element;
-            var echarts = layui.echarts;
-            var carousel = layui.carousel;
-            var $ = layui.$;
+    }).use(['element', 'echarts', 'carousel', 'jquery'], function () {
+        var element = layui.element;
+        var echarts = layui.echarts;
+        var carousel = layui.carousel;
+        var $ = layui.$;
+        var path = $("input[name='path']").val();
+        console.log(path);
+        var incomepath = path + "/ordermanager/getincome";
+        console.log(incomepath);
+        //    页面加载就发送ajax 获取数据
+        $(function () {
 
-            //发送ajax
-        $.ajax({
-                //ajax的url请求不会在url显示
-                url: relpath,
-                data: datas,
-                type: "POST",
-                //不指定dataType 会自动获取 返回值（根据对应的类型）
-                success: function (result) {
-                    alert("我被执行了！");
-                    if (result.code == '0') {
-                        //    提示修改密码成功
-                        layer.alert(result.message, {
-                            skin: 'layui-layer-molv' //样式类名
-                            , closeBtn: 0
-                        });
-                        //清空表单
-                        $("#modifypwd")[0].reset();
+            $.ajax({
+                    url: incomepath,
+                    type: "POST",
+                    success: function (result) {
+                        alert("我被执行了");
+                        var data = result;
+                        console.log(data.data[0]);
 
-                    } else {
-                        layer.msg(result.message);
-                        //    提示用户名输入错误
+                        ordeRender(data);
+                    },
+                    error: function () {
+                        layer.msg("当前连接数偏多，请稍后重试！");
                     }
-                },
-                error: function () {
-                    layer.msg("当前连接数偏多，请稍后重试！");
                 }
-            }
-        );
-        return false;
-    });
+            );
 
-            console.log(echarts);
 
-        })
+        });
+
+
+        /*
+        * 渲染订单柱形图
+        * */
+
+        //初始化
+        function ordeRender(data) {
+
+            console.log("执行了语句");
+            //只能用原生
+            var myorderChart = echarts.init(document.getElementById('order'));
+           /* var myorderChart = echarts.init($("#order"));*/
+
+
+            var orderOption = {
+                title: {
+                    text: '商品订单柱形图'
+                },
+                //提示框组件
+                tooltip: {
+                    //坐标轴触发，主要用于柱状图，折线图等
+                    trigger: 'axis'
+                },
+                //数据全部显示
+                axisLabel: {
+                    interval: 0
+                },
+                //图例
+                legend: {
+                    data: ['订单数']
+                },
+                //横轴 日期
+                xAxis: {
+                    data: data.data[0]
+                },
+                //纵轴 自动分配
+                yAxis: {type: 'value'},
+                //系列列表。每个系列通过type决定自己的图表类型
+                series: [
+                    {
+                        name: '订单数',
+                        //type 为图形的选择，治理为柱状图
+                        type: 'bar',
+                        //订单数
+                        data: data.data[1],//处理小数点数据
+                        itemStyle: {
+                            normal: {//柱子颜色
+                                color: '#4ad2ff'
+                            }
+                        }
+                    }
+                ]
+            };
+            console.log("打印下填充数据"+orderOption);
+            //填充数据
+            myorderChart.setOption(orderOption);
+
+        }
+
+
+    })
+
+
+
+
+
 
 </script>
+
 
 
 </body>
