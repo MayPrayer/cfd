@@ -83,6 +83,11 @@ public class UserLoginController {
             return Result.failed("用户名或密码不正确！");
         } else {
             System.out.println("返回数据");
+            //查询商铺id 不为0则保存到session
+            int shopid = iqs.selectIdByUserId(user.getId());
+            if (shopid!=0){
+                request.getSession().setAttribute("shopid", shopid);
+            }
 //           设置session
             request.getSession().setAttribute("userinfo", user);
             return Result.success();

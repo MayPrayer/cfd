@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Date;
  * @author MayPrayer<br />
  * @since JDK 1.8
  */
+@Component
 public class Orders {
     private int id;
     private int userid;

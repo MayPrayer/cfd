@@ -19,7 +19,6 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
     var dataTable = table.render({
         elem: '#goods'
         , url: realpath //数据接口
-        ,id:'inittable'
         , method: 'post'
         , page: true //开启分页
         , limit: 10
@@ -93,6 +92,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
         var checkStatus = table.checkStatus('goods');
         //获取选中数量
         var selectCount = checkStatus.data.length;
+        console.log("选中数量为"+selectCount)
         if (selectCount == 0) {
             layer.msg('批量删除至少选中一项数据', function () {
             });
@@ -114,9 +114,13 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
                     if (data.code == 0) {
                         //
                         alert("删除成功")
+                    //  提示信息删除成功刷新页面
+                        layer.msg("删除成功", {icon: 6});
+                        dataTable.reload({
+                            elem: '#goods'
+                        })
                     }
                     layer.close(index);
-                    layer.msg(data.msg);
                 }, error: function (code) {
                     parent.layer.msg('操作失败!', {icon: 5, time: 1000});
                 }

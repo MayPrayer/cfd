@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import org.springframework.stereotype.Component;
+
 /**
  * ClassName: Shops <br/>
  * Description: <br/>
@@ -8,6 +10,7 @@ package com.hbnu.entity;
  * @author MayPrayer<br />
  * @since JDK 1.8
  */
+@Component
 public class Shops {
     private int id ;
     private int userid ;

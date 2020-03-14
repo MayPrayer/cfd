@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import org.springframework.stereotype.Component;
+
 /**
  * ClassName: Car <br/>
  * Description: <br/>
@@ -8,6 +10,7 @@ package com.hbnu.entity;
  * @author MayPrayer<br />
  * @since JDK 1.8
  */
+@Component
 public class Car {
     private int id;
     private  int userid;        //用户id

@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
  * @author MayPrayer<br />
  * @since JDK 1.8
  */
+@Component
 public class Result {
     private String code;    //状态码
     private String message; //接口处理信息

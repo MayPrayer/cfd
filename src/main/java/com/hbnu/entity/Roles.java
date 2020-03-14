@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import org.springframework.stereotype.Component;
+
 /**
  * ClassName: Role <br/>
  * Description: 角色表
@@ -8,6 +10,7 @@ package com.hbnu.entity;
  * @author MayPrayer<br />
  * @since JDK 1.8
  */
+@Component
 public class Roles {
     private int id;
     private int userid;  //用户id

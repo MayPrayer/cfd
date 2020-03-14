@@ -51,6 +51,11 @@ public interface IQryService {
     List<Map> selectEveryIncome(int id);
 
 
+    /*
+    * 公告栏服务
+    * */
+    PageInfo selectInformSortBytime(int pageNum, int pageSize, int id);
 
+    int selectIdByUserId(int id);
 
 }

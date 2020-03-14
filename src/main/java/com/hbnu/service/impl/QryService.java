@@ -2,11 +2,9 @@ package com.hbnu.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hbnu.dao.IGoods;
-import com.hbnu.dao.IOrders;
-import com.hbnu.dao.IRoles;
-import com.hbnu.dao.IUserInfo;
+import com.hbnu.dao.*;
 import com.hbnu.entity.Goods;
+import com.hbnu.entity.Informs;
 import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
@@ -34,7 +32,10 @@ public class QryService implements IQryService {
     private IGoods goods;
     @Autowired
     private IOrders orders;
-
+    @Autowired
+    private IInforms informs;
+    @Autowired
+    private IShops shops;
 
     @Override
     public PageInfo findAll(int pageNum, int pageSize) {
@@ -98,6 +99,10 @@ public class QryService implements IQryService {
         return orders.selectCountIncome(id);
     }
 
+    /*
+     * 查询每日的的用户数，输欧如，订单数
+     * */
+
     @Override
     public List<Map> selectEveryOrders(int id) {
         return orders.selectEveryOrders(id);
@@ -115,9 +120,23 @@ public class QryService implements IQryService {
 
 
     /*
-    * 查询每日的的用户数，输欧如，订单数
-    * */
+     * 查询分页公告
+     * */
+    @Override
+    public PageInfo selectInformSortBytime(int pageNum, int pageSize, int id) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Informs> list = informs.selectInformSortBytime(id);
+        PageInfo pageInfo = new PageInfo(list);
+        return pageInfo;
+    }
 
+    /*
+     * 根据用户id查询商铺id
+     * */
+    @Override
+    public int selectIdByUserId(int id) {
+        return shops.selectIdByUserId(id);
+    }
 
 
 }
