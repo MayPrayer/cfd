@@ -4,7 +4,7 @@
 <mapper namespace="com.hbnu.dao.IInforms">
 <!--查询所有公告 最新的先显示-->
     <select id="selectInformSortBytime" resultType="com.hbnu.entity.Informs" >
-       select i.* from informs i,users u , shops s where u.id=s.userid and i.shopid = s.id and u.id=#{id} important desc,createtime desc
+       select i.* from informs i,users u , shops s where u.id=s.userid and i.shopid = s.id and u.id=#{id} order by important desc,createtime desc
     </select>
 
 <!--插入公告栏数据 占位符不能加单引号 -->
@@ -12,8 +12,9 @@
         insert  into informs(title,content,shopid,important,createtime)values(#{title},#{content},#{shopid},#{important},sysdate())
     </insert>
 
-<!--编辑公告栏-->
-    <update id="update">
 
-    </update>
+<!--删除一个公告 根据id-->
+    <delete id="delOneInformById" >
+        delete  from  informs where id=#{id}
+    </delete>
 </mapper>

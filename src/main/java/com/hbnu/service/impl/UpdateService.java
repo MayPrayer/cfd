@@ -63,4 +63,9 @@ public class UpdateService implements IUpdateService {
     public int insertOneInform(String title, String content, int shopid ,int important) {
         return informs.insertOneInform(title,content,shopid,important) ;
     }
+
+    @Override
+    public int delOneInformById(int id) {
+        return informs.delOneInformById(id);
+    }
 }

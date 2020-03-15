@@ -20,4 +20,6 @@ public interface IInforms {
 
     int insertOneInform(@Param("title")String title, @Param("content") String content, @Param("shopid") int shopid, @Param("important") int important);
 
+    int delOneInformById(int id);
+
 }

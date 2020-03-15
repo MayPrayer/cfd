@@ -119,15 +119,14 @@ public class QryService implements IQryService {
     }
 
 
+
     /*
      * 查询分页公告
      * */
     @Override
-    public PageInfo selectInformSortBytime(int pageNum, int pageSize, int id) {
-        PageHelper.startPage(pageNum, pageSize);
+    public List<Informs> selectInformSortBytime(int id) {
         List<Informs> list = informs.selectInformSortBytime(id);
-        PageInfo pageInfo = new PageInfo(list);
-        return pageInfo;
+        return list;
     }
 
     /*

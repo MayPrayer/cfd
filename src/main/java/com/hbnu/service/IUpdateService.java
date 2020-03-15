@@ -32,5 +32,6 @@ public interface IUpdateService {
      * 公告栏服务
      * */
     int insertOneInform(String title,String content,int shopid ,int important);
+    int delOneInformById(int id);
 
 }

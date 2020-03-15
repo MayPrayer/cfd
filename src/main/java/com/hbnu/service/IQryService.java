@@ -2,6 +2,7 @@ package com.hbnu.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hbnu.entity.Goods;
+import com.hbnu.entity.Informs;
 import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import org.apache.ibatis.annotations.Param;
@@ -54,7 +55,7 @@ public interface IQryService {
     /*
     * 公告栏服务
     * */
-    PageInfo selectInformSortBytime(int pageNum, int pageSize, int id);
+    List<Informs> selectInformSortBytime( int id);
 
     int selectIdByUserId(int id);
 
