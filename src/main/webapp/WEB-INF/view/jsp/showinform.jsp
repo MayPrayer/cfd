@@ -29,7 +29,7 @@
                     <input type="hidden" name="informid" value="${inform.id}">
                     <div class="layui-card-header"><span style="color:#FF4500">公告标题</span>：${inform.title} <span><i
                             class="layui-icon"
-                            style="float: right;color:#FF4500" id="del">&#xe640;</i> </span></div>
+                            style="float: right;color:#FF4500" >&#xe640;</i> </span></div>
                     <div class="layui-card-body">
                             ${inform.content}
                     </div>
@@ -46,7 +46,11 @@
         var path = $("input[name='path']").val();
         var delpath = path + '/informs/deloneinform';
         //删除按钮删除
-        $("#del").on('click', function () {
+        // function del(obj){
+        //
+        //
+        // }
+        $("i.layui-icon").on('click', function () {
             //获取id值
             var inputs = $(this).parent().parent().parent().find("input");
             var id = inputs[0].value;
@@ -67,7 +71,6 @@
                     parent.layer.msg('操作失败!', {icon: 5, time: 1000});
                 }
             });
-
 
         });
 
