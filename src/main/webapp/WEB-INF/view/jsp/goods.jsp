@@ -20,15 +20,15 @@
     <form class="layui-form" id="add-form" method="post">
         <div class="layui-form-item">
             <%--           商品--%>
-            <label class="layui-form-label" style="width: 100px">商铺ID</label>
-            <div class="layui-input-inline">
-                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"
-                       placeholder="请输入商铺ID"
-                       autocomplete="off" class="layui-input" readonly="readonly">
-            </div>
+<%--            <label class="layui-form-label" style="width: 100px">商铺ID</label>--%>
+<%--            <div class="layui-input-inline">--%>
+<%--                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"--%>
+<%--                       placeholder="请输入商铺ID"--%>
+<%--                       autocomplete="off" class="layui-input" readonly="readonly">--%>
+<%--            </div>--%>
             <label class="layui-form-label" style="width: 100px">商 品 名</label>
             <div class="llayui-input-inline">
-                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required"
+                <input type="text" name="name" required style="width: 240px" lay-verify="required"
                        placeholder="请输入商品名"
                        autocomplete="off" class="layui-input">
             </div>
@@ -37,13 +37,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">单价</label>
             <div class="layui-input-inline">
-                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"
+                <input type="text" name="price" required style="width: 240px" lay-verify="required"
                        placeholder="请输入商品单价"
                        autocomplete="off" class="layui-input" >
             </div>
             <label class="layui-form-label" style="width: 100px">折扣价</label>
             <div class="llayui-input-inline">
-                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required"
+                <input type="text" name="discountprice" required style="width: 240px" lay-verify="required"
                        placeholder="请输入商品折扣价"
                        autocomplete="off" class="layui-input">
             </div>
@@ -52,13 +52,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">销量</label>
             <div class="layui-input-inline">
-                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"
+                <input type="text" name="sales" required style="width: 240px" lay-verify="required"
                        placeholder="请输入销售数量"
                        autocomplete="off" class="layui-input" >
             </div>
             <label class="layui-form-label" style="width: 100px">库存</label>
             <div class="llayui-input-inline">
-                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required"
+                <input type="text" name="inventory" required style="width: 240px" lay-verify="required"
                        placeholder="请输入库存数量"
                        autocomplete="off" class="layui-input">
             </div>
@@ -72,8 +72,8 @@
             </div>
             <label class="layui-form-label" style="width: 100px">商品状态</label>
             <div class="layui-input-inline">
-                <input type="radio" name="goodsstatus" value="fruit" title="上架"  checked>
-                <input type="radio" name="goodsstatus" value="fresh" title="下架" >
+                <input type="radio" name="goodsstatus" value="上架" title="上架"  checked>
+                <input type="radio" name="goodsstatus" value="下架" title="下架" >
             </div>
 <%--            <label class="layui-form-label" style="width: 100px">商品状态</label>--%>
 <%--            <div class="llayui-input-inline">--%>
@@ -90,7 +90,7 @@
         </div>
 
                 <%--隐藏标签 接受返回的图片路径值提交 --%>
-        <input type="hidden" name="images" class="image">
+        <input type="hidden" name="image" class="image">
 <%-- 图片上传--%>
         <div class="layui-form-item">
             <label class="layui-form-label ">商品图片</label>
@@ -110,7 +110,7 @@
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
-                <textarea name="desc" placeholder="请输入商品描述" class="layui-textarea" style="width:600px"></textarea>
+                <textarea name="describes" placeholder="请输入商品描述" class="layui-textarea" style="width:600px"></textarea>
             </div>
         </div>
 
@@ -120,7 +120,7 @@
         <%--            操作按钮--%>
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="update" id="datamodif">立即修改</button>
+                <button class="layui-btn" lay-submit lay-filter="add" id="addonegood">提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

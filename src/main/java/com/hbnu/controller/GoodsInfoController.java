@@ -41,8 +41,12 @@ public class GoodsInfoController {
 
     @Autowired
     private IQryService iqs;
-
-
+    //图片路径前缀
+//    private static final  String PRE = "D:\\Github\\cfd\\src\\main\\webapp\\static\\";
+    private static final  String PRE = "/file";
+    /*
+     * 输出全部商品信息
+     * */
     @RequestMapping("/showcurgoodsinfo")
     @ResponseBody
     public Result showCurGoodsInfo(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize, HttpSession session) {
@@ -53,10 +57,15 @@ public class GoodsInfoController {
         PageInfo pageInfo = iqs.selectCurUserGoods(pageNum, pageSize, id);
         result.setCount((int) pageInfo.getTotal());
         result.setData(pageInfo);
+        System.out.println("返回结果为" + result);
         return result;
 
     }
 
+
+    /*
+     *跳转到商品页面
+     * */
     @RequestMapping("/showgoods")
     public String showuser() {
         System.out.println("执行了");
@@ -75,6 +84,39 @@ public class GoodsInfoController {
         }
         return Result.success();
 
+    }
+
+    /*
+     * 新增一个商品  describes,img,price,discountprice,sales,inventory,goodsstatus,goodstype
+     * */
+    @RequestMapping("/addgood")
+    @ResponseBody
+    public Result addGood( @RequestParam("name") String name, @RequestParam("describes") String describes, @RequestParam("image") String orginImg,
+                          @RequestParam("price") double price, @RequestParam("discountprice") double discountprice, @RequestParam("sales") int sales, @RequestParam("inventory") int inventory,
+                          @RequestParam("goodsstatus") String goodsstatus, @RequestParam("goodstype") String goodstype,HttpSession session) {
+        int shopid = (int)session.getAttribute("shopid");
+        String img =PRE+orginImg;
+        int code = ius.addGood(shopid, name, describes, img, price, discountprice, sales, inventory, goodsstatus, goodstype);
+        if (code != 1) {
+            return Result.failed("删除失败");
+        }
+        return Result.success();
+
+    }
+
+    /*
+     * 修改商品
+     * */
+    @RequestMapping("/editgood")
+    @ResponseBody
+    public Result editGood(@RequestParam("name") String name, @RequestParam("describes") String describes, @RequestParam("img") String img,
+                           @RequestParam("price") double price, @RequestParam("discountprice") double discountprice, @RequestParam("sales") int sales, @RequestParam("inventory") int inventory,
+                           @RequestParam("goodsstatus") String goodsstatus, @RequestParam("goodstype") String goodstype, @RequestParam("id") int id) {
+        int code = ius.editGood(name, describes, img, price, discountprice, sales, inventory, goodsstatus, goodstype,id);
+        if (code != 1) {
+            return Result.failed("删除失败");
+        }
+        return Result.success();
     }
 
 
@@ -108,47 +150,47 @@ public class GoodsInfoController {
      * */
     @RequestMapping("/upload")
     @ResponseBody
-    public Result uploadImg(MultipartFile file,HttpServletRequest request) throws Exception {
-        String prefix="";
-        String dateStr="";
+    public Result uploadImg(MultipartFile file, HttpServletRequest request) throws Exception {
+        String prefix = "";
+        String dateStr = "";
         //保存上传
         OutputStream out = null;
-        InputStream fileInput=null;
-        try{
-            if(file!=null){
+        InputStream fileInput = null;
+        try {
+            if (file != null) {
                 String originalName = file.getOriginalFilename();
-                prefix=originalName.substring(originalName.lastIndexOf(".")+1);
+                prefix = originalName.substring(originalName.lastIndexOf(".") + 1);
                 Date date = new Date();
 //                生成唯一随机码
-                String uuid = UUID.randomUUID()+"";
+                String uuid = UUID.randomUUID() + "";
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 dateStr = simpleDateFormat.format(date);
 //                照片保存路径
-                String filepath = "D:\\Github\\cfd\\src\\main\\webapp\\static\\upload" + "\\"+dateStr+"\\"+uuid+"." + prefix;
+                String filepath = "D:\\Github\\cfd\\src\\main\\webapp\\static\\upload" + "\\" + dateStr + "\\" + uuid + "." + prefix;
 
 
-                File files=new File(filepath);
+                File files = new File(filepath);
                 //打印查看上传路径
                 System.out.println(filepath);
-                if(!files.getParentFile().exists()){
+                if (!files.getParentFile().exists()) {
                     files.getParentFile().mkdirs();
                 }
                 file.transferTo(files);
 
-                Map<String,Object> map=new HashMap<>();
-                map.put("src","/upload/"+ dateStr+"/"+uuid+"." + prefix);
+                Map<String, Object> map = new HashMap<>();
+                map.put("src", "/upload/" + dateStr + "/" + uuid + "." + prefix);
                 Result result = Result.success();
                 result.setData(map);
                 return result;
             }
 
-        }catch (Exception e){
-        }finally{
+        } catch (Exception e) {
+        } finally {
             try {
-                if(out!=null){
+                if (out != null) {
                     out.close();
                 }
-                if(fileInput!=null){
+                if (fileInput != null) {
                     fileInput.close();
                 }
             } catch (IOException e) {

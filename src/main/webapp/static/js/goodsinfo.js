@@ -10,6 +10,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
     var delmutipath = path + "/curgoodsinfo/delgoods"
     var likepath = path + "/curgoodsinfo/selectlikegoods";
     var addpath = path + "/curgoodsinfo/addgood";
+    var editpath = path + "/curgoodsinfo/editgood";
     var vifpath = path + "/curgoodsinfo/vifgood";
     var updatepath = path + "/curgoodsinfo/updategood";
     var uploadpath = path+"/curgoodsinfo/upload";
@@ -32,6 +33,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
             {
                 field: 'img', title: '图片',width: 150 ,sort: true, templet: function (d) {
                     return '<div><img   src=' + d.img + '></div>'
+                    // return '<div><img   src=' + '/file'+d.img + '></div>'
                 }
             },
             {field: 'price', title: '单价', sort: true, templet: '<div>￥&nbsp;{{d.price}}&nbsp;元</div>'},
@@ -225,8 +227,9 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
 /*
 * 监听表单
 * */
-    form.on('submit(save)', function (data) {
+    form.on('submit(add)', function (data) {
         var datas = data.field;
+        alert("提交成功");
         console.log(datas);
         // var action=data.form.action;
         $.ajax({

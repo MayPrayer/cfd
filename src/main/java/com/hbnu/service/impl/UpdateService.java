@@ -60,6 +60,20 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
+    public int addGood(int shopid, String name, String describes, String img, double price, double discountprice, int sales, int inventory, String goodsstatus, String goodstype) {
+        int code = goods.addGood(shopid,name,describes,img,price,discountprice,sales,inventory,goodsstatus,goodstype);
+        System.out.println("新增数据返回值为"+code);
+        return code;
+    }
+
+    @Override
+    public int editGood( String name, String describes, String img, double price, double discountprice, int sales, int inventory, String goodsstatus, String goodstype, int id) {
+        int code = goods.editGood(name,describes,img,price,discountprice,sales,inventory,goodsstatus,goodstype,id);
+        System.out.println("编辑数据返回值为"+code);
+        return code;
+    }
+
+    @Override
     public int insertOneInform(String title, String content, int shopid ,int important) {
         return informs.insertOneInform(title,content,shopid,important) ;
     }

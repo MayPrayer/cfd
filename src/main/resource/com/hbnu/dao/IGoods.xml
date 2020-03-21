@@ -11,4 +11,16 @@
         delete  from  goods where id=#{id}
     </delete>
 
+<!-- 添加商品-->
+    <insert id="addGood">
+        insert into goods(shopid,name,describes,img,price,discountprice,sales,inventory,goodsstatus,goodstype)values(#{shopid},#{name},#{describes},
+        #{img},#{price},#{discountprice},#{sales},#{inventory},#{goodsstatus},#{goodstype})
+    </insert>
+
+<!--编辑商品-->
+    <update id="editGood">
+        update   goods  set name=#{name},describes=#{describes},img=#{img},price=#{price},discountprice=#{discountprice},sales=#{sales},inventory=#{inventory},goodsstatus=#{goodsstatus},goodstype=#{goodstype} where id=#{id}
+    </update>
+
+
 </mapper>

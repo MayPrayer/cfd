@@ -26,6 +26,8 @@ public interface IUpdateService {
      * 商品服务
      * */
     int delGoodById(int id);
+    int addGood(int shopid,String name,String describes,String img,double price, double discountprice,int sales,int inventory,String goodsstatus,String goodstype);
+    int editGood(String name,String describes,String img,double price, double discountprice,int sales,int inventory,String goodsstatus,String goodstype,int id);
 
 
     /*
@@ -33,5 +35,12 @@ public interface IUpdateService {
      * */
     int insertOneInform(String title,String content,int shopid ,int important);
     int delOneInformById(int id);
+
+
+
+
+    /*
+    *
+    * */
 
 }
