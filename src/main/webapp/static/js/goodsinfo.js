@@ -417,4 +417,95 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
     );
 
 
+    /*
+    * 模糊查询
+    * */
+
+
+    $("button[name='search']").on("click", search);
+
+    //用户名模糊查询
+    function search() {
+        //获取搜索的值
+        var inputVal = $('input[name="codeLike"]').val();
+        alert("执行了")
+        //重新加载表格
+        table.render({
+                elem: '#goods'
+                , url: likepath //数据接口
+                , method: 'post'
+                , page: true //开启分页
+                , limit: 10
+                , limits: [10, 15]
+                , cols: [[
+                    {width: 80, type: 'checkbox'},
+                    {field: 'id', width: 80, title: 'ID', sort: true},
+                    {field: 'shopid', title: '商铺ID', sort: true},
+                    {field: 'name', title: '商品名', sort: true},
+                    {field: 'describes', title: '描述', sort: true},
+                    {
+                        field: 'img', title: '图片', width: 150, sort: true, templet: function (d) {
+                            return '<div><img   src=' + d.img + '></div>'
+                            // return '<div><img   src=' + '/file'+d.img + '></div>'
+                        }
+                    },
+                    {field: 'price', title: '单价', sort: true, templet: '<div>￥&nbsp;{{d.price}}&nbsp;元</div>'},
+                    {
+                        field: 'discountprice',
+                        title: '折扣价',
+                        sort: true,
+                        // templet: '<div style="color:#FF4500;font-weight: bold>￥&nbsp;{{d.price}}&nbsp;元</div>'
+                        templet: '<div>￥&nbsp;{{d.discountprice}}&nbsp;元</div>'
+
+                    },
+                    {field: 'sales', title: '销售量', sort: true},
+                    {field: 'inventory', title: '库存', sort: true},
+                    {
+                        field: 'goodsstatus', title: '商品状态', sort: true, templet: function (d) {
+                            if (d.goodsstatus == "上架") {
+                                return '<span style="color:#39D8B8;font-weight: bold">' + d.goodsstatus + '</span>'
+                            }
+                            if (d.goodsstatus == "下架") {
+                                return '<span style="color:#FF4500;font-weight: bold">' + d.goodsstatus + '</span>'
+                            } else {
+                                return '<span style="color:#888888;font-weight: bold">' + '无状态' + '</span>'
+                            }
+                        }
+                    },
+                    {
+                        field: 'goodstype', title: '商品类型', sort: true, templet: function (d) {
+                            if (d.goodstype == "生鲜") {
+                                return '<span style="color:#FFFF00;">' + d.goodstype + '</span>'
+                            }
+                            if (d.goodstype == "水果") {
+                                return '<span style="color:#5CBB44;">' + d.goodstype + '</span>'
+                            } else {
+                                return '<span style="color:#888888;">' + '无状态' + '</span>'
+                            }
+                        }
+                    },
+                    //操作栏
+                    {fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
+                ]],
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.count, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+                ,
+                request: {
+                    pageName: 'pagenum' // 页码的参数名称，默认：page
+                    , limitName: 'pagesize' //每页数据量的参数名，默认：limit
+                },
+                where: {
+                    "name": inputVal
+                }
+            }
+        )
+
+    }
+
 })

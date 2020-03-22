@@ -22,5 +22,8 @@
         update   goods  set name=#{name},describes=#{describes},img=#{img},price=#{price},discountprice=#{discountprice},sales=#{sales},inventory=#{inventory},goodsstatus=#{goodsstatus},goodstype=#{goodstype} where id=#{id}
     </update>
 
-
+<!--模糊查询商品-->
+    <select id="selectLikeGoods" resultType="com.hbnu.entity.Goods">
+        select * from goods where  shopid=#{shopid} and name like '%${name}%'
+    </select>
 </mapper>

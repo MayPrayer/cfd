@@ -201,4 +201,21 @@ public class GoodsInfoController {
     }
 
 
+    /*
+    * 模糊查询
+    * */
+
+    @RequestMapping("/selectlikegoods")
+    @ResponseBody
+    public Result selectLikeUser(@RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize, @RequestParam("name") String name,HttpSession session) {
+        int shopid = (int)session.getAttribute("shopid");
+        System.out.println("开始页" + pageNum + "\n每页数据量" + pageSize + "\t模糊查询词为：" + name);
+        Result result = Result.success();
+        PageInfo pageInfo = iqs.selectLikeGoods(pageNum, pageSize, name,shopid);
+        result.setCount((int) pageInfo.getTotal());
+        result.setData(pageInfo);
+        return result;
+    }
+
+
 }

@@ -36,7 +36,7 @@ public interface IQryService {
      *  商品服务
      * */
     PageInfo selectCurUserGoods(int pageNum, int pageSize, int id);
-
+    PageInfo selectLikeGoods(int pageNum, int pageSize, String name,int shopid);
 
     /*
      * 营业详情服务

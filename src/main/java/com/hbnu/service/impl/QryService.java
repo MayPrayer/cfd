@@ -80,6 +80,14 @@ public class QryService implements IQryService {
         return pageInfo;
     }
 
+    @Override
+    public PageInfo selectLikeGoods(int pageNum, int pageSize, String name,int shopid) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Goods> list = goods.selectLikeGoods(name,shopid);
+        PageInfo pageInfo = new PageInfo(list);
+        return pageInfo;
+    }
+
 
     /*
      *  查询用户总数 总收入 订单总数

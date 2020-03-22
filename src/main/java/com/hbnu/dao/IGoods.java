@@ -32,4 +32,5 @@ public interface IGoods {
                  @Param("sales")int sales, @Param("inventory")int inventory, @Param("goodsstatus")String goodsstatus, @Param("goodstype")String goodstype,@Param("id")int id);
 
 
+    List<Goods> selectLikeGoods(@Param("name") String name, @Param("shopid") int shopid);
 }

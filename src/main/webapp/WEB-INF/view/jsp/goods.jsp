@@ -19,13 +19,6 @@
 <div id="add-main" style="display: none;">
     <form class="layui-form" id="add-form" method="post">
         <div class="layui-form-item">
-            <%--           商品--%>
-<%--            <label class="layui-form-label" style="width: 100px">商铺ID</label>--%>
-<%--            <div class="layui-input-inline">--%>
-<%--                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"--%>
-<%--                       placeholder="请输入商铺ID"--%>
-<%--                       autocomplete="off" class="layui-input" readonly="readonly">--%>
-<%--            </div>--%>
             <label class="layui-form-label" style="width: 100px">商 品 名</label>
             <div class="layui-input-inline">
                 <input type="text" name="name" required style="width: 240px" lay-verify="required"
@@ -75,18 +68,6 @@
                 <input type="radio" name="goodsstatus" value="上架" title="上架"  checked>
                 <input type="radio" name="goodsstatus" value="下架" title="下架" >
             </div>
-<%--            <label class="layui-form-label" style="width: 100px">商品状态</label>--%>
-<%--            <div class="llayui-input-inline">--%>
-<%--                <label class="layui-form-label">选择框</label>--%>
-<%--                    <select name="city" lay-verify="required">--%>
-<%--                        <option value=""></option>--%>
-<%--                        <option value="0">北京</option>--%>
-<%--                        <option value="1">上海</option>--%>
-<%--                        <option value="2">广州</option>--%>
-<%--                        <option value="3">深圳</option>--%>
-<%--                        <option value="4">杭州</option>--%>
-<%--                    </select>--%>
-<%--            </div>--%>
         </div>
 
                 <%--隐藏标签 接受返回的图片路径值提交 --%>
@@ -102,10 +83,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
@@ -205,19 +182,12 @@
             </div>
         </div>
 
-
-
-
-
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
                 <textarea name="modifdescribes" placeholder="请输入商品描述" class="layui-textarea" style="width:600px"></textarea>
             </div>
         </div>
-
-
-
 
         <%--            操作按钮--%>
         <div class="layui-form-item">
@@ -243,7 +213,7 @@
                         <div class="layui-col-md4 layui-col-md-offset4">
                             <di class="layui-layout-right">
                                 <div class="layui-input-inline">
-                                    <input type="text" id="codeLike" name="codeLike" placeholder="请输入账户名"
+                                    <input type="text" id="codeLike" name="codeLike" placeholder="请输入商品名"
                                            autocomplete="off" class="layui-input">
                                 </div>
                                 <button class="layui-btn" name="search">搜索</button>
