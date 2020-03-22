@@ -109,9 +109,10 @@ public class GoodsInfoController {
      * */
     @RequestMapping("/editgood")
     @ResponseBody
-    public Result editGood(@RequestParam("name") String name, @RequestParam("describes") String describes, @RequestParam("img") String img,
-                           @RequestParam("price") double price, @RequestParam("discountprice") double discountprice, @RequestParam("sales") int sales, @RequestParam("inventory") int inventory,
-                           @RequestParam("goodsstatus") String goodsstatus, @RequestParam("goodstype") String goodstype, @RequestParam("id") int id) {
+    public Result editGood(@RequestParam("modifname") String name, @RequestParam("modifdescribes") String describes, @RequestParam("modifimage") String orginImg,
+                           @RequestParam("modifprice") double price, @RequestParam("modifdiscountprice") double discountprice, @RequestParam("modifsales") int sales, @RequestParam("modifinventory") int inventory,
+                           @RequestParam("modifgoodsstatus") String goodsstatus, @RequestParam("modifgoodstype") String goodstype, @RequestParam("id") int id) {
+        String img =PRE+orginImg;
         int code = ius.editGood(name, describes, img, price, discountprice, sales, inventory, goodsstatus, goodstype,id);
         if (code != 1) {
             return Result.failed("删除失败");
