@@ -225,7 +225,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
 
 
 /*
-* 监听表单
+* 监听新增商品表单
 * */
     form.on('submit(add)', function (data) {
         var datas = data.field;
@@ -264,6 +264,30 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util','lay
         );
         return false;
     });
+
+
+/**
+ * 表单验证规则
+ *
+ * */
+form.verify(
+    {
+
+
+        /*0-999999.99区间*/
+        price: function (value) {
+            if (!new RegExp('^\\d{1,6}(\\.\\d{1,2})?$').test(value)) {
+                return '价格格式不正确，请输入正确的价格';
+            }
+
+        },
+        /* 0-200个*/
+        nums:[
+        /^[1-9]\d*$/
+        ,'只能是正整数哦'
+    ]
+    }
+);
 
 
 

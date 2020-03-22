@@ -37,13 +37,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">单价</label>
             <div class="layui-input-inline">
-                <input type="text" name="price" required style="width: 240px" lay-verify="required"
+                <input type="text" name="price" required style="width: 240px" lay-verify="required|price"
                        placeholder="请输入商品单价"
                        autocomplete="off" class="layui-input" >
             </div>
             <label class="layui-form-label" style="width: 100px">折扣价</label>
             <div class="llayui-input-inline">
-                <input type="text" name="discountprice" required style="width: 240px" lay-verify="required"
+                <input type="text" name="discountprice" required style="width: 240px" lay-verify="required|price"
                        placeholder="请输入商品折扣价"
                        autocomplete="off" class="layui-input">
             </div>
@@ -52,13 +52,13 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">销量</label>
             <div class="layui-input-inline">
-                <input type="text" name="sales" required style="width: 240px" lay-verify="required"
+                <input type="text" name="sales" required style="width: 240px" lay-verify="nums|required"
                        placeholder="请输入销售数量"
                        autocomplete="off" class="layui-input" >
             </div>
             <label class="layui-form-label" style="width: 100px">库存</label>
             <div class="llayui-input-inline">
-                <input type="text" name="inventory" required style="width: 240px" lay-verify="required"
+                <input type="text" name="inventory" required style="width: 240px" lay-verify="nums|required"
                        placeholder="请输入库存数量"
                        autocomplete="off" class="layui-input">
             </div>
