@@ -126,9 +126,14 @@
                         <div class="layui-col-md4 layui-col-md-offset4">
                             <di class="layui-layout-right">
                                 <div class="layui-input-inline">
-                                    <input type="text" id="codeLike" name="codeLike" placeholder="请输入账户名"
-                                           autocomplete="off" class="layui-input">
+                                    <input type="text" name="startday" required style="width: 120px"  placeholder="请选择开始时间"
+                                           autocomplete="off" class="layui-input" id="startday">
                                 </div>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="enday" required style="width: 120px"  placeholder="请选择结束时间"
+                                           autocomplete="off" class="layui-input" id="enday">
+                                </div>
+
                                 <button class="layui-btn" name="search">搜索</button>
                             </di>
                         </div>

@@ -8,6 +8,7 @@ import com.hbnu.service.IQryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -160,8 +161,16 @@ public class QryService implements IQryService {
     @Override
     public PageInfo selectCurOrders(int pageNum, int pageSize,int shopid) {
         PageHelper.startPage(pageNum, pageSize);
-
         return new PageInfo(orders.selectCurOrders(shopid));
+    }
+
+    /*
+     * 根据日期查询订单
+     * */
+    @Override
+    public PageInfo selectlikeOrders(int pageNum, int pageSize, int shopid, Date startday, Date enday) {
+        PageHelper.startPage(pageNum, pageSize);
+        return new PageInfo(orders.selectLikeOrders(shopid,startday,enday));
     }
 
     @Override
@@ -178,6 +187,8 @@ public class QryService implements IQryService {
     public List<Shipaddress> selectaddrById(int id) {
         return shipaddress.selectaddrById(id);
     }
+
+
 
 
 }

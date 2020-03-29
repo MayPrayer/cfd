@@ -39,6 +39,11 @@
         select * from  orders  where shopid=#{shopid}
     </select>
 
+    <select id="selectLikeOrders" resultType="com.hbnu.entity.Orders">
+        select * from  orders where shopid=#{shopid} and ordertime between #{startday} and #{enday}
+    </select>
+
+
 
 
 <!--删除一条记录-->

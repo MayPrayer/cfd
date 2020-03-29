@@ -5,6 +5,7 @@ import com.hbnu.dao.IOrderDetail;
 import com.hbnu.entity.*;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -80,4 +81,5 @@ public interface IQryService {
      * */
     List<Shipaddress> selectaddrById(int id);
 
+    PageInfo selectlikeOrders(int pageNum, int pageSize, int shopid, Date startday, Date enday);
 }

@@ -8,6 +8,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
     var realpath = path + "/ordermanager/getcurorders";
     var delpath = path + "/ordermanager/deloneorder";
     var seemorepath = path + "/ordermanager/seemore";
+    var selectlikepath = path + "/ordermanager/selctlike"
 
 
     //没进行任何操作时的表格
@@ -67,10 +68,10 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
             let message = data.message;
             let ordertime = data.ordertime;
             let orderstate = data.orderstate;
-            console.log("订单创建时间"+ordertime);
+            console.log("订单创建时间" + ordertime);
 
             //    发送ajax 获取所需信息
-            gainData(userid, shipadrid, orderid,amount,ordertime,orderstate,amount,message);
+            gainData(userid, shipadrid, orderid, amount, ordertime, orderstate, amount, message);
 
             seemore();
             //    填充数据
@@ -110,7 +111,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
     }
 
 
-    function gainData(userid, shipadrid, orderid,amount,ordertime,orderstate,amount,message) {
+    function gainData(userid, shipadrid, orderid, amount, ordertime, orderstate, amount, message) {
         let data = {userid, shipadrid, orderid};
         $.ajax({
             type: 'post',
@@ -124,27 +125,27 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
                     $("input[name='ordertime']").val(ordertime);
                     $("input[name='userphone']").val(data.data.userinfo[0].phone);
                     $("input[name='orderstate']").val(orderstate);
-                //联系信息
+                    //联系信息
 
                     $("input[name='touser']").val(data.data.addrinfo[0].name);
                     $("input[name='tophone']").val(data.data.addrinfo[0].phone);
-                    $("input[name='address']").val(data.data.addrinfo[0].address+data.data.addrinfo[0].housenumber);
-                //遍历商品信息
-                    let  mesg='' ;
+                    $("input[name='address']").val(data.data.addrinfo[0].address + data.data.addrinfo[0].housenumber);
+                    //遍历商品信息
+                    let mesg = '';
 
-                    for ( good of data.data.goodsinfo){
-                       let mesginfo="</p>"+good.goods.name+"------"+good.taste+"------"+good.goods.discountprice +"元------*"+good.quantity+"</p>";
-                       mesg = mesg+mesginfo;
-                        console.log("订单信息为"+mesginfo);
+                    for (good of data.data.goodsinfo) {
+                        let mesginfo = "</p>" + good.goods.name + "------" + good.taste + "------" + good.goods.discountprice + "元------*" + good.quantity + "</p>";
+                        mesg = mesg + mesginfo;
+                        console.log("订单信息为" + mesginfo);
                     }
-                    let  totalmeg = "<p>"+"总价为---------------<span style='color: #FF5722;'>￥:"+amount+"元</span>"+"</p>";
+                    let totalmeg = "<p>" + "总价为---------------<span style='color: #FF5722;'>￥:" + amount + "元</span>" + "</p>";
                     //首先先清空元素 避免重复
                     $("div[name='goodsinfo']").empty();
                     let firstr = "<pre>名称    口味    价格    数量</pre>"
-                    $(firstr+mesg+"</br>"+totalmeg).appendTo("div[name='goodsinfo']");
+                    $(firstr + mesg + "</br>" + totalmeg).appendTo("div[name='goodsinfo']");
 
-                //备注信息
-                   $("textarea[name='remark']").val(message);
+                    //备注信息
+                    $("textarea[name='remark']").val(message);
 
                 }
 
@@ -164,6 +165,71 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
             });
     }
 
+
+// 渲染输入框 日历
+    laydate.render({
+        elem: '#enday', //指定元素
+        type: 'datetime'
+    });
+    laydate.render({
+        elem: '#startday', //指定元素
+        type: 'datetime'
+    });
+
+
+//监听按钮
+    $("button[name='search']").on("click", search);
+
+    function search() {
+        alert("执行了！")
+        let startday = $("#startday").val();
+        let enday = $("#enday").val();
+        console.log("开始时间" + startday + "\n结束时间" + enday);
+        if ((startday != '') && (startday != '')) {
+            table.render({
+                elem: '#demo'
+                , url: selectlikepath //数据接口
+                , method: 'post'
+                , page: true //开启分页
+                , limit: 10
+                , limits: [10, 15]
+                , cols: [[
+                    // {width: 80, type: 'checkbox'},
+                    {field: 'id', title: 'ID', sort: true},
+                    {field: 'userid', title: '用户编号', sort: true},
+                    {field: 'shipadrid', title: '联系编号', sort: true},
+                    {field: 'amount', title: '总价', width: 200, sort: true},
+                    {
+                        field: 'ordertime', title: '创建订单时间', sort: true,
+                    },
+                    {field: 'orderstate', title: '订单状态', sort: true},
+                    {field: 'message', title: '备注', sort: true},
+                    {field: 'deliverytime', title: '预计送达时间', sort: true},
+                    //操作栏
+                    {fixed: 'right', title: '操作', align: 'center', toolbar: '#barDemo'}
+                ]],
+                parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "count": res.count, //解析数据长度
+                        "data": res.data.list //解析数据列表
+                    };
+                }
+                ,
+                request: {
+                    pageName: 'pagenum' // 页码的参数名称，默认：page
+                    , limitName: 'pagesize' //每页数据量的参数名，默认：limit
+                }, where: {
+                    "startday": startday,
+                    "enday":enday
+                }
+            });
+        } else {
+            layer.msg('开始日期与结束日期不能为空!', {icon: 5, time: 1000});
+        }
+
+    }
 
 });
 

@@ -2,8 +2,10 @@ package com.hbnu.dao;
 
 import com.hbnu.entity.OrderDetail;
 import com.hbnu.entity.Orders;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.core.annotation.Order;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +44,5 @@ public interface IOrders {
     int deleteOneOrder(long id);
 
 
-
-
-
+    List selectLikeOrders(@Param("shopid") int shopid, @Param("startday") Date startday,@Param("enday") Date enday);
 }

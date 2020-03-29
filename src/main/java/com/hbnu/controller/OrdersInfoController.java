@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * ClassName: OrdersInfoController <br/>
@@ -149,14 +149,13 @@ public class OrdersInfoController {
         return result;
 
 
-
     }
 
 
     /*
-    * 订单操作
-    *
-    * */
+     * 订单操作
+     *
+     * */
 
     @RequestMapping("/getcurorders")
     @ResponseBody
@@ -178,41 +177,60 @@ public class OrdersInfoController {
 
     @RequestMapping("/deloneorder")
     @ResponseBody
-    public Result delOneOrder(@RequestParam("id")long id){
+    public Result delOneOrder(@RequestParam("id") long id) {
         ius.deleteOneOrder(id);
         Result result = Result.success();
         return result;
     }
 
-/*
-* 查看详情
-* */
+    /*
+     * 查看详情
+     * */
     @RequestMapping("/seemore")
     @ResponseBody
-    public Result delOneOrder(@RequestParam("orderid")long orderid,@RequestParam("userid")int userid,@RequestParam("shipadrid")int shipadrid){
+    public Result delOneOrder(@RequestParam("orderid") long orderid, @RequestParam("userid") int userid, @RequestParam("shipadrid") int shipadrid) {
 //       商品详情
-        System.out.println("商品详情参数"+orderid);
+        System.out.println("商品详情参数" + orderid);
 
-        List<OrderDetail> od =  iqs.selectOrderGood(orderid);
+        List<OrderDetail> od = iqs.selectOrderGood(orderid);
         List<OrderDetail> odtemp = iqs.selectOrderDetailByOrId(orderid);
-        System.out.println("商品详情1"+od);
-        System.out.println("商品详情2"+odtemp);
+        System.out.println("商品详情1" + od);
+        System.out.println("商品详情2" + odtemp);
 //        用户信息
         List<Users> user = iqs.selectInfoByUserid(userid);
 //        联系方式
-        List<Shipaddress> addr=iqs.selectaddrById(shipadrid);
+        List<Shipaddress> addr = iqs.selectaddrById(shipadrid);
 //        封装信息
-        Map<String,Object> moreinfo = new HashMap<>();
-        moreinfo.put("goodsinfo",od);
-        moreinfo.put("userinfo",user);
-        moreinfo.put("addrinfo",addr);
+        Map<String, Object> moreinfo = new HashMap<>();
+        moreinfo.put("goodsinfo", od);
+        moreinfo.put("userinfo", user);
+        moreinfo.put("addrinfo", addr);
 
-        System.out.println("返回信息为"+moreinfo);
+        System.out.println("返回信息为" + moreinfo);
         Result result = Result.success();
         result.setData(moreinfo);
         return result;
     }
 
+    /*
+     * 查询
+     * */
+    @RequestMapping("/selctlike")
+    @ResponseBody
+    public Result selctlike(HttpSession session, @RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize,
+                            @RequestParam("startday") String orlstartday, @RequestParam("enday") String orlenday) throws ParseException {
+        int shopid = (int) session.getAttribute("shopid");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startday = df.parse(orlstartday);
+        Date enday = df.parse(orlenday);
+
+        PageInfo pageInfo = iqs.selectlikeOrders(pageNum, pageSize, shopid,startday,enday);
+
+        Result result = Result.success();
+        result.setCount((int) pageInfo.getTotal());
+        result.setData(pageInfo);
+        return result;
+    }
 
 
 }
