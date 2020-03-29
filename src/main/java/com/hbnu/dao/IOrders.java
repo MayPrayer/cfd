@@ -24,7 +24,7 @@ public interface IOrders {
 
     int selectCountUsers(int id);
 
-    int selectCountIncome(int id);
+    double selectCountIncome(int id);
 
 
     /*

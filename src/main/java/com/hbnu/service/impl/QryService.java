@@ -111,7 +111,8 @@ public class QryService implements IQryService {
     }
 
     @Override
-    public int selectCountIncome(int id) {
+    public double selectCountIncome(int id) {
+
         return orders.selectCountIncome(id);
     }
 

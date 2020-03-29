@@ -46,7 +46,7 @@ public interface IQryService {
 
     int selectCountUsers(int id);
 
-    int selectCountIncome(int id);
+    double selectCountIncome(int id);
 
     List<Map> selectEveryOrders(int id);
 

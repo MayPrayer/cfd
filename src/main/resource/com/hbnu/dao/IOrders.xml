@@ -3,17 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hbnu.dao.IOrders">
     <!--查询当前商铺订单总数-->
-    <select id="selectCountOrders" parameterType="com.hbnu.entity.Orders" resultType="int">
+    <select id="selectCountOrders"  resultType="int">
         select count(*) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
     </select>
 
     <!--查询当前商铺用户总数 不重复-->
-    <select id="selectCountUsers" parameterType="com.hbnu.entity.Orders" resultType="int">
+    <select id="selectCountUsers"  resultType="int">
     select  count(distinct o.userid) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
     </select>
 
     <!-- 查询当前商铺收入总数-->
-    <select id="selectCountIncome" parameterType="com.hbnu.entity.Orders" resultType="int">
+    <select id="selectCountIncome"  resultType="double">
     select  sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
     </select>
 
