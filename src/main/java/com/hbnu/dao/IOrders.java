@@ -39,7 +39,7 @@ public interface IOrders {
     * */
 
     List<Orders> selectCurOrders(int shopid);
-    int deleteOneOrder(int id);
+    int deleteOneOrder(long id);
 
 
 

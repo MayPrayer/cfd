@@ -1,0 +1,36 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hbnu.dao.IOrderDetail">
+    <select id="selectOrderGood" resultMap="orderToGood">
+select * from orderdetail od,goods g where od.goodsid=g.id and od.orderid=#{id}
+    </select>
+    <select id="selectOrderDetailByOrId" resultType="com.hbnu.entity.OrderDetail">
+        select * from orderdetail where orderid=#{orderid}
+    </select>
+    <resultMap id="orderToGood" type="com.hbnu.entity.OrderDetail">
+        <id property="id" column="id"></id>
+        <result property="goodsid" column="goodsid"></result>
+        <result property="orderid" column="orderid"></result>
+        <result property="amount" column="amount"></result>
+        <result property="taste" column="taste"></result>
+        <result property="quantity" column="quantity"></result>
+        <result property="price" column="price"></result>
+        <result property="goodsimg" column="goodsimg"></result>
+        <result property="goodsname" column="goodsname"></result>
+        <association property="goods" javaType="com.hbnu.entity.Goods">
+            <id property="id" column="id"></id>
+            <result property="shopid" column="shopid"></result>
+            <result property="name" column="name"></result>
+            <result property="describes" column="describes"></result>
+            <result property="img" column="img"></result>
+            <result property="price" column="price"></result>
+            <result property="discountprice" column="discountprice"></result>
+            <result property="sales" column="sales"></result>
+            <result property="inventory" column="inventory"></result>
+            <result property="goodsstatus" column="goodsstatus"></result>
+            <result property="goodstype" column="goodstype"></result>
+        </association>
+    </resultMap>
+
+</mapper>

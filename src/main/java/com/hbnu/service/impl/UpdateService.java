@@ -86,7 +86,7 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
-    public int deleteOneOrder(int id) {
+    public int deleteOneOrder(long id) {
         return orders.deleteOneOrder(id);
     }
 }

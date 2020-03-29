@@ -43,7 +43,7 @@ public interface IUpdateService {
     /*
     *订单服务
     * */
-    int deleteOneOrder(int id);
+    int deleteOneOrder(long id);
 
 
 

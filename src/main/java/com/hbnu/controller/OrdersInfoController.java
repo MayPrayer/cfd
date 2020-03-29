@@ -178,7 +178,7 @@ public class OrdersInfoController {
 
     @RequestMapping("/deloneorder")
     @ResponseBody
-    public Result delOneOrder(@RequestParam("id")int id){
+    public Result delOneOrder(@RequestParam("id")long id){
         ius.deleteOneOrder(id);
         Result result = Result.success();
         return result;
