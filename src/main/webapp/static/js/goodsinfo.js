@@ -29,7 +29,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
                 {field: 'id', width: 80, title: 'ID', sort: true},
                 {field: 'shopid', title: '商铺ID', sort: true},
                 {field: 'name', title: '商品名', sort: true},
-                {field: 'describes', title: '描述', sort: true},
+                {field: 'describes', title: '描述',width:200,sort: true},
                 {
                     field: 'img', title: '图片', width: 150, sort: true, templet: function (d) {
                         return '<div><img   src=' + d.img + '></div>'
@@ -442,7 +442,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
                     {field: 'id', width: 80, title: 'ID', sort: true},
                     {field: 'shopid', title: '商铺ID', sort: true},
                     {field: 'name', title: '商品名', sort: true},
-                    {field: 'describes', title: '描述', sort: true},
+                    {field: 'describes', title: '描述', width:200,sort: true},
                     {
                         field: 'img', title: '图片', width: 150, sort: true, templet: function (d) {
                             return '<div><img   src=' + d.img + '></div>'

@@ -3,10 +3,7 @@ package com.hbnu.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hbnu.dao.*;
-import com.hbnu.entity.Goods;
-import com.hbnu.entity.Informs;
-import com.hbnu.entity.Roles;
-import com.hbnu.entity.Users;
+import com.hbnu.entity.*;
 import com.hbnu.service.IQryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,12 @@ public class QryService implements IQryService {
     private IInforms informs;
     @Autowired
     private IShops shops;
+    @Autowired
+    private IOrderDetail orderdetail;
+    @Autowired
+    private IShipaddress shipaddress;
+
+
 
     @Override
     public PageInfo findAll(int pageNum, int pageSize) {
@@ -68,6 +71,11 @@ public class QryService implements IQryService {
     @Override
     public List<Users> selectByAccount(String account) {
         return users.selectByAccount(account);
+    }
+
+    @Override
+    public List<Users> selectInfoByUserid(int id) {
+        return users.selectInfoByUserid(id);
     }
 
 
@@ -143,6 +151,31 @@ public class QryService implements IQryService {
     @Override
     public int selectIdByUserId(int id) {
         return shops.selectIdByUserId(id);
+    }
+
+    /*
+    查询当前商铺订单
+    * */
+    @Override
+    public PageInfo selectCurOrders(int pageNum, int pageSize,int shopid) {
+        PageHelper.startPage(pageNum, pageSize);
+
+        return new PageInfo(orders.selectCurOrders(shopid));
+    }
+
+    @Override
+    public List<OrderDetail> selectOrderGood(long id) {
+        return  orderdetail.selectOrderGood(id);
+    }
+
+    @Override
+    public List<OrderDetail> selectOrderDetailByOrId(long id) {
+        return orderdetail.selectOrderDetailByOrId(id);
+    }
+
+    @Override
+    public List<Shipaddress> selectaddrById(int id) {
+        return shipaddress.selectaddrById(id);
     }
 
 

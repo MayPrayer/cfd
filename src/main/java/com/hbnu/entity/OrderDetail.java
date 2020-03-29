@@ -1,5 +1,7 @@
 package com.hbnu.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,13 +16,16 @@ import org.springframework.stereotype.Component;
 public class OrderDetail {
     private int id ;
     private int goodsid ;
-    private int orderid ;
-    private int amount ; //总额
+    @JsonSerialize(using = ToStringSerializer.class)
+    private long orderid ;
+    private double amount ; //总额
     private String taste ;//口味
     private int quantity ;//数量
-    private int price ;
+    private double price ;
     private String  goodsimg  ;
     private String goodsname ;
+//    一对一
+    private Goods goods;
 
     public int getId() {
         return id;
@@ -38,19 +43,19 @@ public class OrderDetail {
         this.goodsid = goodsid;
     }
 
-    public int getOrderid() {
+    public long getOrderid() {
         return orderid;
     }
 
-    public void setOrderid(int orderid) {
+    public void setOrderid(long orderid) {
         this.orderid = orderid;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -70,11 +75,11 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -94,6 +99,14 @@ public class OrderDetail {
         this.goodsname = goodsname;
     }
 
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
+
 
     @Override
     public String toString() {
@@ -107,6 +120,7 @@ public class OrderDetail {
                 ", price=" + price +
                 ", goodsimg='" + goodsimg + '\'' +
                 ", goodsname='" + goodsname + '\'' +
+                ", goods=" + goods +
                 '}';
     }
 }

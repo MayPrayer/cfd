@@ -1,8 +1,11 @@
 package com.hbnu.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * ClassName: Orders <br/>
@@ -14,15 +17,19 @@ import java.util.Date;
  */
 @Component
 public class Orders {
-    private int id;
+//    解决精度损失问题
+    @JsonSerialize(using = ToStringSerializer.class)
+    private long id;
     private int userid;
     private int shopid;    //商铺编号
     private int shipadrid;  //收获地址编号
     private int amount;   //订单总额
-    private Date ordertime;  //订单日期
+    private String ordertime;  //订单日期
     private  String orderstate;
     private  String message;  //备注消息
     private  String deliverytime; //交付时间
+//  一对多
+    private  List<OrderDetail> orderDetails;
 
 
     public int getShopid() {
@@ -33,11 +40,12 @@ public class Orders {
         this.shopid = shopid;
     }
 
-    public int getId() {
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -65,11 +73,11 @@ public class Orders {
         this.amount = amount;
     }
 
-    public Date getOrdertime() {
+    public String getOrdertime() {
         return ordertime;
     }
 
-    public void setOrdertime(Date ordertime) {
+    public void setOrdertime(String ordertime) {
         this.ordertime = ordertime;
     }
 
@@ -97,6 +105,29 @@ public class Orders {
         this.deliverytime = deliverytime;
     }
 
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    //    @Override
+//    public String toString() {
+//        return "Orders{" +
+//                "id=" + id +
+//                ", userid=" + userid +
+//                ", shopid=" + shopid +
+//                ", shipadrid=" + shipadrid +
+//                ", amount=" + amount +
+//                ", ordertime=" + ordertime +
+//                ", orderstate='" + orderstate + '\'' +
+//                ", message='" + message + '\'' +
+//                ", deliverytime='" + deliverytime + '\'' +
+//                '}';
+//    }
+
 
     @Override
     public String toString() {
@@ -110,6 +141,7 @@ public class Orders {
                 ", orderstate='" + orderstate + '\'' +
                 ", message='" + message + '\'' +
                 ", deliverytime='" + deliverytime + '\'' +
+                ", orderDetails=" + orderDetails +
                 '}';
     }
 }

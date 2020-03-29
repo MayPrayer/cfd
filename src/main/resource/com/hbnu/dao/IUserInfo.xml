@@ -7,6 +7,12 @@
     select * from users
     </select>
 
+<!--根据用户id查询-->
+    <select id="selectInfoByUserid" resultType="com.hbnu.entity.Users">
+       select * from users where id=#{id}
+    </select>
+
+
 <!--根据账号名和密码查询用户-->
     <select id="selectByAccountAndPassword" resultType="com.hbnu.entity.Users">
         select * from users where account=#{account} and pwd=#{pwd}

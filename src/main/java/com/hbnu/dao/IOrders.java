@@ -1,5 +1,9 @@
 package com.hbnu.dao;
 
+import com.hbnu.entity.OrderDetail;
+import com.hbnu.entity.Orders;
+import org.springframework.core.annotation.Order;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,14 @@ public interface IOrders {
     List<Map> selectEveryOrders(int id);
     List<Map> selectEveryUsers(int id);
     List<Map> selectEveryIncome(int id);
+
+    /*
+    * 查询当前商铺所有订单
+    * */
+
+    List<Orders> selectCurOrders(int shopid);
+    int deleteOneOrder(int id);
+
 
 
 

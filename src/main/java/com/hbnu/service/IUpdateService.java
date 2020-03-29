@@ -1,5 +1,6 @@
 package com.hbnu.service;
 
+import com.hbnu.dao.IOrderDetail;
 import com.hbnu.entity.Users;
 
 /**
@@ -40,7 +41,11 @@ public interface IUpdateService {
 
 
     /*
-    *
+    *订单服务
     * */
+    int deleteOneOrder(int id);
+
+
+
 
 }

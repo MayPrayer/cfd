@@ -1,12 +1,17 @@
 package com.hbnu.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.hbnu.entity.OrderDetail;
 import com.hbnu.entity.Result;
+import com.hbnu.entity.Shipaddress;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
+import com.hbnu.service.IUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -29,6 +34,8 @@ import java.util.Map;
 public class OrdersInfoController {
     @Autowired
     private IQryService iqs;
+    @Autowired
+    private IUpdateService ius;
 
     /*
      * 跳转至营业额页面
@@ -140,7 +147,72 @@ public class OrdersInfoController {
         Result result = Result.success();
         result.setData(totalresultMap);
         return result;
+
+
+
     }
+
+
+    /*
+    * 订单操作
+    *
+    * */
+
+    @RequestMapping("/getcurorders")
+    @ResponseBody
+    public Result getCurOredrs(HttpSession session, @RequestParam("pagenum") int pageNum, @RequestParam("pagesize") int pageSize) {
+        int shopid = (int) session.getAttribute("shopid");
+        PageInfo pageInfo = iqs.selectCurOrders(pageNum, pageSize, shopid);
+
+        Result result = Result.success();
+        result.setCount((int) pageInfo.getTotal());
+        result.setData(pageInfo);
+        return result;
+    }
+
+
+    @RequestMapping("/curorders")
+    public String toCurOrders() {
+        return "curorders";
+    }
+
+    @RequestMapping("/deloneorder")
+    @ResponseBody
+    public Result delOneOrder(@RequestParam("id")int id){
+        ius.deleteOneOrder(id);
+        Result result = Result.success();
+        return result;
+    }
+
+/*
+* 查看详情
+* */
+    @RequestMapping("/seemore")
+    @ResponseBody
+    public Result delOneOrder(@RequestParam("orderid")long orderid,@RequestParam("userid")int userid,@RequestParam("shipadrid")int shipadrid){
+//       商品详情
+        System.out.println("商品详情参数"+orderid);
+
+        List<OrderDetail> od =  iqs.selectOrderGood(orderid);
+        List<OrderDetail> odtemp = iqs.selectOrderDetailByOrId(orderid);
+        System.out.println("商品详情1"+od);
+        System.out.println("商品详情2"+odtemp);
+//        用户信息
+        List<Users> user = iqs.selectInfoByUserid(userid);
+//        联系方式
+        List<Shipaddress> addr=iqs.selectaddrById(shipadrid);
+//        封装信息
+        Map<String,Object> moreinfo = new HashMap<>();
+        moreinfo.put("goodsinfo",od);
+        moreinfo.put("userinfo",user);
+        moreinfo.put("addrinfo",addr);
+
+        System.out.println("返回信息为"+moreinfo);
+        Result result = Result.success();
+        result.setData(moreinfo);
+        return result;
+    }
+
 
 
 }

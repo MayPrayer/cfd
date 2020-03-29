@@ -2,6 +2,7 @@ package com.hbnu.service.impl;
 
 import com.hbnu.dao.IGoods;
 import com.hbnu.dao.IInforms;
+import com.hbnu.dao.IOrders;
 import com.hbnu.dao.IUserInfo;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IUpdateService;
@@ -26,7 +27,8 @@ public class UpdateService implements IUpdateService {
     private IGoods goods;
     @Autowired
     private IInforms informs;
-
+    @Autowired
+    private IOrders orders;
 
     @Override
     public void updatePwdByAccountAndPassword(String pwd, String account) {
@@ -81,5 +83,10 @@ public class UpdateService implements IUpdateService {
     @Override
     public int delOneInformById(int id) {
         return informs.delOneInformById(id);
+    }
+
+    @Override
+    public int deleteOneOrder(int id) {
+        return orders.deleteOneOrder(id);
     }
 }

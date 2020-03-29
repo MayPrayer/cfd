@@ -34,6 +34,18 @@
         select date(o.ordertime),sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id} and o.ordertime between current_date()-7 and sysdate()group by day(o.ordertime);
     </select>
 
+<!--    查询当前商铺的账单内容-->
+    <select id="selectCurOrders" resultType="com.hbnu.entity.Orders">
+        select * from  orders  where shopid=#{shopid}
+    </select>
+
+
+
+<!--删除一条记录-->
+    <delete id="deleteOneOrder">
+        delete  from orders where id =#{id}
+    </delete>
+
 
     <resultMap id="everyOrders" type="java.util.Map">
         <result column="date(o.ordertime)" property="ordertime" jdbcType="VARCHAR"/>
@@ -49,5 +61,9 @@
         <result column="date(o.ordertime)" property="ordertime" jdbcType="VARCHAR"/>
         <result column="sum(o.amount)" property="count" jdbcType="VARCHAR"/>
     </resultMap>
+
+
+
+
 
 </mapper>

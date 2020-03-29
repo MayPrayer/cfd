@@ -15,7 +15,7 @@
 <div class="layui-layout layui-layout-admin">
 
     <div class="layui-header">
-        <div class="layui-logo">后台管理面板</div>
+        <div class="layui-logo">生鲜配送后台管理</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <%--        <ul class="layui-nav layui-layout-left">--%>
         <%--            <li class="layui-nav-item"><a href="">控制台</a></li>--%>
@@ -47,7 +47,7 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">公告栏管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe638;</i>公告栏管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}//informs/toinform">公告显示</a></dd>
                         <dd><a href="${pageContext.request.contextPath}//informs/toaddinform">公告新增</a></dd>
@@ -55,7 +55,7 @@
                 </li>
 
                 <li class="layui-nav-item ">
-                    <a class="" href="javascript:;">用户信息管理</a>
+                    <a class="" href="javascript:;"><i class="layui-icon">&#xe612;</i>用户信息管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}/updateuserinfo/showpersoninfo">基础信息显示</a></dd>
                         <dd><a href="${pageContext.request.contextPath}/user/modifypwd">密码修改</a></dd>
@@ -63,26 +63,26 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">用户管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe613;</i>用户管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}/updateuserinfo/showuser">用户管理</a></dd>
                         <dd><a href="">超链接</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">订单管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe63c;</i>订单管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">订单管理</a></dd>
+                        <dd><a href="${pageContext.request.contextPath}/ordermanager/curorders">订单管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">商品管理</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe680;</i>商品管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}/curgoodsinfo/showgoods">商品管理</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">营业额统计</a>
+                    <a href="javascript:;"><i class="layui-icon">&#xe629;</i>营业额统计</a>
                     <dl class="layui-nav-child">
                         <dd><a href="${pageContext.request.contextPath}/ordermanager/income">营业额统计</a></dd>
                     </dl>

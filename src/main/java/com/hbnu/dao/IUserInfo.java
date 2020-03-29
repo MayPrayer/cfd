@@ -40,4 +40,7 @@ public interface IUserInfo {
 
 //    更新用户
     int updateOneUser(@Param("name")String name,@Param("phone")String phone,@Param("nickname")String nickname,@Param("id")int id);
+
+//根据id查询用户信息
+    List<Users>  selectInfoByUserid(int id);
 }
