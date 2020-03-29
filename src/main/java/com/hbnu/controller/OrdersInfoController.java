@@ -1,12 +1,12 @@
 package com.hbnu.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hbnu.entity.OrderDetail;
-import com.hbnu.entity.Result;
-import com.hbnu.entity.Shipaddress;
-import com.hbnu.entity.Users;
+import com.hbnu.dao.IOrders;
+import com.hbnu.entity.*;
 import com.hbnu.service.IQryService;
 import com.hbnu.service.IUpdateService;
+import com.hbnu.util.ExcelUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -36,6 +42,10 @@ public class OrdersInfoController {
     private IQryService iqs;
     @Autowired
     private IUpdateService ius;
+//   直接调用dao层接口
+    @Autowired
+    private IOrders orders;
+
 
     /*
      * 跳转至营业额页面
@@ -233,4 +243,83 @@ public class OrdersInfoController {
     }
 
 
+    @RequestMapping(value="/download",produces = "text/plain;charset=utf-8")
+    @ResponseBody
+    public Result  download (HttpServletRequest request, HttpServletResponse response ,HttpSession session) {
+        int shopid = (int)session.getAttribute("shopid");
+        String year = request.getParameter("year");
+        String month = request.getParameter("month");
+        //  查到数据
+        List<Orders> list= orders.selectCurOrders(shopid);
+        sendExcel(list,response);
+        return Result.success();
+    }
+
+    public void sendExcel(List<Orders> list, HttpServletResponse response){
+        //excel标题
+        String[] title = {"编号","订单编号","用户编号","联系编号","总价","创建订单时间","订单状态","备注","预计送达时间"};
+        //excel文件名
+        String fileName = "商铺订单表格"+System.currentTimeMillis()+".xls";
+        //sheet名
+        String sheetName = "订单";
+        //  将数据转换成String [][] 二维数组（具体情况根据自身需求定）
+        String [][] content = new String[list.size()][title.length];
+        int id=1;
+        int i=0;
+        for (Orders o: list) {
+            content[i][0] = String.valueOf(id);
+            content[i][1] = String.valueOf(parseFromNull(o.getId()));
+            content[i][2] = String.valueOf(parseFromNull(o.getUserid()));
+            content[i][3] = String.valueOf(parseFromNull(o.getShipadrid()));
+            content[i][4] = String.valueOf(parseFromNull(o.getAmount()));
+            content[i][5] = String.valueOf(parseFromNull(o.getOrdertime()));
+            content[i][6] = String.valueOf(parseFromNull(o.getOrderstate()));
+            content[i][7] = String.valueOf(parseFromNull(o.getMessage()));
+            content[i][8] = String.valueOf(parseFromNull(o.getDeliverytime()));
+            id++;
+            i++;
+        }
+        //创建HSSFWorkbook
+        HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(sheetName, title, content, null);
+        //响应到客户端
+        this.setResponseHeader(response, fileName);
+        OutputStream os = null;
+        try {
+            os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    //发送响应流方法
+    public void setResponseHeader(HttpServletResponse response, String fileName) {
+        try {
+            try {
+                fileName = new String(fileName.getBytes(),"ISO8859-1");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            response.setContentType("application/octet-stream;charset=ISO8859-1");
+            response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
+            response.addHeader("Pargam", "no-cache");
+            response.addHeader("Cache-Control", "no-cache");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public Object parseFromNull(Object obj){
+        if (obj==null){
+            obj=' ';
+        }
+        return obj;
+    }
+
 }
+
+

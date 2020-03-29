@@ -9,6 +9,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
     var delpath = path + "/ordermanager/deloneorder";
     var seemorepath = path + "/ordermanager/seemore";
     var selectlikepath = path + "/ordermanager/selctlike"
+    var exportpath =path + "/ordermanager/download"
 
 
     //没进行任何操作时的表格
@@ -21,7 +22,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
         , limits: [10, 15]
         , cols: [[
             // {width: 80, type: 'checkbox'},
-            {field: 'id', title: 'ID', sort: true},
+            {field: 'id', title: '订单编号', sort: true},
             {field: 'userid', title: '用户编号', sort: true},
             {field: 'shipadrid', title: '联系编号', sort: true},
             {field: 'amount', title: '总价', width: 200, sort: true},
@@ -195,7 +196,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
                 , limits: [10, 15]
                 , cols: [[
                     // {width: 80, type: 'checkbox'},
-                    {field: 'id', title: 'ID', sort: true},
+                    {field: 'id', title: '订单编号', sort: true},
                     {field: 'userid', title: '用户编号', sort: true},
                     {field: 'shipadrid', title: '联系编号', sort: true},
                     {field: 'amount', title: '总价', width: 200, sort: true},
@@ -230,6 +231,17 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'la
         }
 
     }
+
+
+    /*
+    * 导出excel表格
+    * */
+    $("button[name='exportexcel']").on("click", exportexcel);
+    function exportexcel(){
+        window.location.href =exportpath;
+    }
+
+
 
 });
 
