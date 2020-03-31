@@ -2,51 +2,56 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hbnu.dao.IUserInfo">
-<!-- 注意什么时候用resultType  什么时候用Map-->
+    <!-- 注意什么时候用resultType  什么时候用Map-->
     <select id="findAll" resultType="com.hbnu.entity.Users">
     select * from users
     </select>
 
-<!--根据用户id查询-->
+    <!--根据用户id查询-->
     <select id="selectInfoByUserid" resultType="com.hbnu.entity.Users">
        select * from users where id=#{id}
     </select>
 
 
-<!--根据账号名和密码查询用户-->
+    <!--根据账号名和密码查询用户-->
     <select id="selectByAccountAndPassword" resultType="com.hbnu.entity.Users">
         select * from users where account=#{account} and pwd=#{pwd}
     </select>
 
-<!--    根据账户名和密码更新密码-->
-    <select id="updatePwdByAccountAndPassword" resultType="com.hbnu.entity.Users" >
+    <!--    根据账户名和密码更新密码-->
+    <select id="updatePwdByAccountAndPassword" resultType="com.hbnu.entity.Users">
         update users set pwd = #{pwd} where account = #{account}
     </select>
 
-<!--根据id删除用户-->
+    <!--根据id删除用户-->
     <select id="deleteUserById" resultType="com.hbnu.entity.Users">
         delete from  users where id=#{id}
     </select>
 
-<!--模糊查询-->
+    <!--模糊查询-->
     <select id="selectLikeUser" resultType="com.hbnu.entity.Users" parameterType="String">
         select * from users where account like '%${account}%'
     </select>
 
-<!--根据账户名查询用户信息-->
+    <!--根据账户名查询用户信息-->
     <select id="selectByAccount" resultType="com.hbnu.entity.Users">
         select * from users where account=#{account}
     </select>
 
-<!--    增加用户 字段中有关键字 用反引号   时间类型需要指定date-->
-    <insert id="insertOneUser" parameterType="com.hbnu.entity.Users" >
+    <!--    增加用户 字段中有关键字 用反引号   时间类型需要指定date-->
+    <insert id="insertOneUser" parameterType="com.hbnu.entity.Users">
     insert into users(name,account,phone,pwd,avatar,birthday,salt,secret,nickname,idcard,wechat,cardholdback,cardholdfront,`change`)values(#{name},#{account},#{phone},#{pwd},#{avatar},#{birthday},#{salt},#{secret},#{nickname},#{idcard},#{wechat},#{cardholdback},#{cardholdfront},#{change})
     </insert>
 
-<!--修改用户信息 -->
+    <!--修改用户信息 -->
     <update id="updateOneUser" parameterType="com.hbnu.entity.Users">
         update  users set name=#{name},phone=#{phone},nickname=#{nickname} where id=#{id}
     </update>
 
+
+    <!--获取user表自增id的值-->
+    <select id="selectidValue">
+    SELECT auto_increment FROM information_schema.`TABLES` WHERE TABLE_SCHEMA='xiangcheng' AND TABLE_NAME='users';
+    </select>
 
 </mapper>

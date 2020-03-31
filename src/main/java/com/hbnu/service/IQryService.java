@@ -33,6 +33,8 @@ public interface IQryService {
 
     List<Users> selectInfoByUserid(int id);
 
+    int selectidValue();
+
     /*
      *  商品服务
      * */

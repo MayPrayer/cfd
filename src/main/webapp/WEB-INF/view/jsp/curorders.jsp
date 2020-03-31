@@ -117,7 +117,7 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
-            <div class="layui-card" id="design">
+            <div class="layui-card" style="margin-top: 50px">
                 <div class="layui-card-header">
                     <div class="layui-row">
                         <div class="layui-col-md4">

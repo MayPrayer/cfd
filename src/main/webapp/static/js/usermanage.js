@@ -29,7 +29,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             {field: 'phone', title: '手机号', sort: true},
             {
                 field: 'birthday', title: '生日', sort: true, templet: function (d) {
-                    return util.toDateString(d.birthday, "yyyy-MM-dd HH:mm:ss")
+                    return util.toDateString(d.birthday, "yyyy-MM-dd")
                 }
             },
             {field: 'nickname', title: '昵称', sort: true},
@@ -78,7 +78,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
                         sort: true,
                         //将json中不同格式的数据转换成正常格式
                         templet: function (d) {
-                            return util.toDateString(d.birthday, "yyyy-MM-dd HH:mm:ss")
+                            return util.toDateString(d.birthday, "yyyy-MM-dd")
                         }
                     },
                     {field: 'nickname', title: '昵称', sort: true},
@@ -178,7 +178,6 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
 
     laydate.render({
         elem: '#birthday', //指定元素
-        type: 'datetime'
     });
 
 
@@ -193,7 +192,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
             title: "新增用户",
             closebtn: false,
             shift: 2,
-            area: ['450px', '550px'],
+            area: ['800px', '700px'],
             shadeclose: true,
             // btn: ['新增', '取消'],
             // btnalign: 'c',

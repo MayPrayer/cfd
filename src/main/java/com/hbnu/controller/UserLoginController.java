@@ -1,6 +1,7 @@
 package com.hbnu.controller;
 
 import com.hbnu.entity.Result;
+import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.management.relation.Role;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,8 +42,14 @@ public class UserLoginController {
 
     //   跳转到管理界面
     @RequestMapping("/index")
-    public String index(ModelMap model, HttpSession session) {
+    public String index(ModelMap model, HttpSession session, HttpServletRequest request) {
         Users user = (Users) session.getAttribute("userinfo");
+
+//  查询角色 ，根据userid查询角色
+        Roles role = iqs.selectByUserid(user.getId());
+        if (role.getName().equals("ROLE_ADMIN")) {
+            request.getSession().setAttribute("admin", role);
+        }
         model.addAttribute("user", user);
         return "admin";
     }
@@ -84,13 +92,21 @@ public class UserLoginController {
         } else {
             System.out.println("返回数据");
             //查询商铺id 不为0则保存到session
-            int shopid = iqs.selectIdByUserId(user.getId());
-            if (shopid!=0){
-                request.getSession().setAttribute("shopid", shopid);
+            int shopid = 0;
+            try {
+                shopid = iqs.selectIdByUserId(user.getId());
+            } catch (Exception e) {
+                System.out.println("无商铺");
+            } finally {
+                if (shopid != 0) {
+                    request.getSession().setAttribute("shopid", shopid);
+                }
+
+                //           设置session
+                request.getSession().setAttribute("userinfo", user);
+                return Result.success();
             }
-//           设置session
-            request.getSession().setAttribute("userinfo", user);
-            return Result.success();
+
         }
     }
 
@@ -104,14 +120,14 @@ public class UserLoginController {
     //验证用户名是否存在
     @RequestMapping("/vifaccount")
     @ResponseBody
-    public Result vifAccount(@RequestParam("account")String account) {
+    public Result vifAccount(@RequestParam("account") String account) {
 //        调用服务查询是否存在用户
         List<Users> users = iqs.selectByAccount(account);
-        System.out.println("user的信息为\n"+users);
-        if (users.isEmpty()){
+        System.out.println("user的信息为\n" + users);
+        if (users.isEmpty()) {
             return Result.success();
 
-        }else {
+        } else {
             return Result.failed("用户已存在");
         }
 

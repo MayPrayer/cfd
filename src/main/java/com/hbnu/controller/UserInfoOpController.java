@@ -149,7 +149,7 @@ public class UserInfoOpController {
         user.setPhone(phone);
         user.setIdcard(idcard);
         System.out.println("生日为"+birthday);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Date birth=null;
         try {
             birth =  df.parse(birthday);

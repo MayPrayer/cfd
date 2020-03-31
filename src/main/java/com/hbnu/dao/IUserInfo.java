@@ -38,9 +38,12 @@ public interface IUserInfo {
     //   添加用户
     int insertOneUser(Users user);
 
-//    更新用户
-    int updateOneUser(@Param("name")String name,@Param("phone")String phone,@Param("nickname")String nickname,@Param("id")int id);
+    //    更新用户
+    int updateOneUser(@Param("name") String name, @Param("phone") String phone, @Param("nickname") String nickname, @Param("id") int id);
 
-//根据id查询用户信息
-    List<Users>  selectInfoByUserid(int id);
+    //根据id查询用户信息
+    List<Users> selectInfoByUserid(int id);
+
+    //查询自增id的值
+    int selectidValue();
 }

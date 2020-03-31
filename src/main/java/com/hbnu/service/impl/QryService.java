@@ -79,6 +79,11 @@ public class QryService implements IQryService {
         return users.selectInfoByUserid(id);
     }
 
+    @Override
+    public int selectidValue() {
+        return users.selectidValue();
+    }
+
 
     //当前用户商品信息
     @Override
