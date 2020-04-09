@@ -5,4 +5,16 @@
     <select id="selectIdByUserId" resultType="int">
         select id from shops where userid=#{userid}
     </select>
+
+    <insert id="addOneShop">
+        insert into shops(userid,name,logo,position,managername,managerphone)values(#{userid},#{name},#{logo},#{position},#{managername},#{managerphone})
+    </insert>
+
+    <delete id="delOneShop">
+        delete from shops where userid=#{userid}
+    </delete>
+
+    <update id="updateOneShop">
+        update  shops set name=#{name},logo=#{logo},position=#{position},managername=#{managername},managerphone=#{managerphone} where id=#{id}
+    </update>
 </mapper>

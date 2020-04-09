@@ -7,4 +7,11 @@
         select  * from roles where userid =#{userid}
     </select>
 
+    <insert id="insertOneRole">
+        insert  into roles(userid,name) values(#{userid},#{name})
+    </insert>
+
+    <delete id="delOneRole">
+        delete  from  roles where userid=#{userid}
+    </delete>
 </mapper>

@@ -1,11 +1,9 @@
 package com.hbnu.service.impl;
 
-import com.hbnu.dao.IGoods;
-import com.hbnu.dao.IInforms;
-import com.hbnu.dao.IOrders;
-import com.hbnu.dao.IUserInfo;
+import com.hbnu.dao.*;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IUpdateService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,11 @@ public class UpdateService implements IUpdateService {
     private IInforms informs;
     @Autowired
     private IOrders orders;
+
+    @Autowired
+    private IRoles roles ;
+    @Autowired
+    private IShops shops;
 
     @Override
     public void updatePwdByAccountAndPassword(String pwd, String account) {
@@ -54,6 +57,8 @@ public class UpdateService implements IUpdateService {
         return code;
     }
 
+
+
     @Override
     public int delGoodById(int id) {
         int code = goods.delGoodById(id);
@@ -75,6 +80,9 @@ public class UpdateService implements IUpdateService {
         return code;
     }
 
+
+
+
     @Override
     public int insertOneInform(String title, String content, int shopid ,int important) {
         return informs.insertOneInform(title,content,shopid,important) ;
@@ -89,4 +97,38 @@ public class UpdateService implements IUpdateService {
     public int deleteOneOrder(long id) {
         return orders.deleteOneOrder(id);
     }
+
+
+
+
+    @Override
+    public int insertOneRole(int userid, String name) {
+        return roles.insertOneRole(userid,name);
+    }
+
+    @Override
+    public int delOneRole(int userid) {
+        return roles.delOneRole(userid);
+    }
+
+
+
+
+
+    @Override
+    public int addOneShop( int userid,String name,String logo,String position,String managername, String managerphone) {
+        return shops.addOneShop(userid,name,logo,position,managername,managerphone);
+    }
+
+    @Override
+    public int delOneShop(int userid) {
+        return shops.delOneShop(userid);
+    }
+
+    @Override
+    public int updateOneShop(String name, String logo, String position, String managername, String managerphoneid) {
+        return shops.updateOneShop(name,logo,position,managername,managerphoneid);
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.hbnu.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 /**
  * ClassName: IShops <br/>
  * Description: <br/>
@@ -13,4 +15,15 @@ public interface IShops {
      * 根据用户id查询商铺id
      * */
     int selectIdByUserId(int id);
+
+
+    int addOneShop(@Param("userid")int userid, @Param("name") String name,@Param("logo")String logo,@Param("position")String position, @Param("managername")String managername, @Param("managerphone")String managerphone);
+
+
+    int delOneShop(int userid);
+
+    int updateOneShop(@Param("name")String name,@Param("logo")String logo,@Param("position")String position,@Param("managername")String managername,@Param("managerphoneid")String managerphoneid);
+
+
+
 }

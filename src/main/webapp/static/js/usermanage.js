@@ -1,7 +1,7 @@
-layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], function () {
+layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'upload'], function () {
     //赋值引用
     var element = layui.element, layer = layui.layer, form = layui.form, $ = layui.jquery, table = layui.table,
-        laydate = layui.laydate, util = layui.util;
+        laydate = layui.laydate, util = layui.util, upload = layui.upload;
     //获取项目根路径
     var path = $("input[name='path']").val();
     //获取json数据路径
@@ -11,6 +11,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
     var addpath = path + "/updateuserinfo/adduser";
     var vifpath = path + "/user/vifaccount";
     var updatepath = path + "/updateuserinfo/updateuser";
+    var uploadpath = path + "/curgoodsinfo/upload";
 
 
     //没进行任何操作时的表格
@@ -353,6 +354,100 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util'], fu
         );
         return false;
     });
+
+
+    /*
+    * 监控新增用户单选框按钮 ,
+    * */
+    form.on("radio(adminfilter)", function (data) {
+        alert("我执行了");
+        $("#shopinfo").hide();
+        //设置禁用,去除隐藏提交，防止提交
+        $(".custom").attr("disabled","disabled");
+        $(".custom").attr("lay-verify","");
+    });
+
+    form.on("radio(userfilter)", function (data) {
+        alert("我执行了");
+        $("#shopinfo").show();
+        $(".custom").attr("lay-verify","required");
+        $("input[name='shopphone']").attr("lay-verify","required|phone");
+        $(".custom").removeAttr("disabled");
+    });
+
+
+    // 图片上传 并将路径(/upload/2020-03-07/b8682757-b5ce-453f-942d-798af03d3ae4.jpg)存入隐藏域
+    var uploadInst1 = upload.render({
+        elem: '#imgupload1'
+        , url: uploadpath
+        , accept: 'images'
+        , size: 50000
+        , before: function (obj) {
+            obj.preview(function (index, file, result) {
+                $('#demo1').attr('src', result);
+            });
+        }
+        , done: function (res) {
+            //如果上传失败
+            if (res.code > 0) {
+                return layer.msg('上传失败');
+            }
+            //上传成功 提示信息
+            var demoText1 = $('#demoText1');
+            demoText1.html('<span style="color: #4cae4c;">上传成功</span>');
+            //获取隐藏域 ，赋值操作 ，控制台显示
+            var fileupload1 = $("input[name='userimage']");
+            fileupload1.attr("value", res.data.src);
+            console.log(fileupload1.attr("value"));
+        }
+        , error: function () {
+            //演示失败状态，并实现重传
+            var demoText1 = $('#demoText1');
+            demoText1.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText1.find('.demo-reload').on('click', function () {
+                uploadInst1.upload();
+            });
+        }
+    });
+
+
+    var uploadInst2 = upload.render({
+        elem: '#imgupload2'
+        , url: uploadpath
+        , accept: 'images'
+        , size: 50000
+        , before: function (obj) {
+            obj.preview(function (index, file, result) {
+                $('#demo2').attr('src', result);
+            });
+        }
+        , done: function (res) {
+            //如果上传失败
+            if (res.code > 0) {
+                return layer.msg('上传失败');
+            }
+            //上传成功 提示信息
+            var demoText2 = $('#demoText2');
+            demoText2.html('<span style="color: #4cae4c;">上传成功</span>');
+            //获取隐藏域 ，赋值操作 ，控制台显示
+            var fileupload2 = $("input[name='shopimage']");
+            fileupload2.attr("value", res.data.src);
+            console.log(fileupload2.attr("value"));
+        }
+        , error: function () {
+            //演示失败状态，并实现重传
+            var demoText2 = $('#demoText2');
+            demoText2.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText2.find('.demo-reload').on('click', function () {
+                uploadInst2.upload();
+            });
+        }
+    });
+
+
+
+
+
 
 
 });

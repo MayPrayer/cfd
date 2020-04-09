@@ -6,6 +6,13 @@ import com.hbnu.entity.Roles;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
 import com.hbnu.service.IUpdateService;
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +21,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 
 /**
@@ -130,6 +140,14 @@ public class UserInfoOpController {
         Result result = Result.success();
 //       调用服务删除用户
         ius.deleteUserById(id);
+//  查看权限
+        Roles roles = iqs.selectByUserid(id);
+        if (roles.getName().equals("ROLE_SHOP")) {
+            //删除商铺
+            ius.delOneShop(id);
+        }
+//删除权限
+        ius.delOneRole(id);
         return result;
     }
 
@@ -137,43 +155,61 @@ public class UserInfoOpController {
     //添加一位用户
     @RequestMapping("/adduser")
     @ResponseBody
-    public Result addUser(@RequestParam("account") String account, @RequestParam("nickname") String nickname, @RequestParam("pwd") String pwd, @RequestParam("avatar") String avatar, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
-                          @RequestParam("idcard") String idcard
+    public Result addUser(@RequestParam("account") String account, @RequestParam("nickname") String nickname, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
+                          @RequestParam("idcard") String idcard, @RequestParam("grant") String grant, @RequestParam("userimage") String userimage, @RequestParam("shopname") String shopname, @RequestParam("shopaddress") String shopaddress, @RequestParam("shopphone") String shopphone, @RequestParam("shopimage") String shopimage
+            , @RequestParam("managername") String managername
     ) {
+
+
         Users user = new Users();
         user.setAccount(account);
         user.setNickname(nickname);
         user.setPwd(pwd);
-        user.setAvatar(avatar);
+        user.setAvatar(userimage);
         user.setName(name);
         user.setPhone(phone);
         user.setIdcard(idcard);
-        System.out.println("生日为"+birthday);
+        System.out.println("生日为" + birthday);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date birth=null;
+        Date birth = null;
         try {
-            birth =  df.parse(birthday);
-        }catch(Exception e){
+            birth = df.parse(birthday);
+        } catch (Exception e) {
 
         }
         user.setBirthday(birth);
         int mesgcode = ius.insertOneUser(user);
-        if(mesgcode==1){
-           Result result =  Result.success();
-           result.setMessage("添加用户成功！");
-           return  result;
+        //            查询用户id
+        List<Users> users = iqs.selectByAccount(account);
+        int userid = users.get(0).getId();
+
+        //创建商铺用户
+        if (grant.equals("shop")) {
+//创建角色，绑定id 创建商铺
+            ius.insertOneRole(userid, "ROLE_SHOP");
+            ius.addOneShop(userid, shopname, shopimage, shopaddress, managername, shopphone);
+
+        } else {
+            //创建管理员
+            ius.insertOneRole(userid, "ROLE_ADMIN");
+        }
+        if (mesgcode == 1) {
+            Result result = Result.success();
+            result.setMessage("添加用户成功！");
+            return result;
         }
         return Result.failed("添加用户失败，请检查填写信息！");
     }
 
-//   编辑用户信息
+    //   编辑用户信息
     @RequestMapping("/updateuser")
     @ResponseBody
-    public Result editUser(@RequestParam("modifname")String name ,@RequestParam("modifphone")String phone,@RequestParam("modifnickname")String nickname,@RequestParam("modifid")int id){
-        ius.updateOneUser(name,phone,nickname,id);
-            Result result =  Result.success();
-            result.setMessage("更新用户成功！");
-            return  result;
+    public Result editUser(@RequestParam("modifname") String name, @RequestParam("modifphone") String phone, @RequestParam("modifnickname") String nickname, @RequestParam("modifid") int id) {
+        ius.updateOneUser(name, phone, nickname, id);
+        Result result = Result.success();
+        result.setMessage("更新用户成功！");
+        return result;
     }
+
 
 }

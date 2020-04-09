@@ -28,87 +28,150 @@
 <%--弹出表单 新增用户--%>
 <div id="add-main" style="display: none;">
     <form class="layui-form" id="add-form" method="post">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top:3px;margin-left:3px">
+            <legend><h5 style="color: #009688">用户信息</h5></legend>
+        </fieldset>
         <%--     账户       --%>
         <div class="layui-form-item center">
             <label class="layui-form-label" style="width: 100px">账 户</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="account" required style="width: 240px" lay-verify="required"
                        placeholder="请输入登录账户名" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <%--        昵称--%>
-        <div class="layui-form-item">
+
+            <%--        昵称--%>
             <label class="layui-form-label" style="width: 100px">昵 称</label>
-            <div class="layui-input-block">
-                <input type="text" name="nickname" required style="width: 240px" lay-verify="required" placeholder="请输入昵称"
+            <div class="layui-input-inline">
+                <input type="text" name="nickname" required style="width: 240px" lay-verify="required"
+                       placeholder="请输入昵称"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
-
         <%--            密码--%>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">密 码</label>
-            <div class="layui-input-block">
-                <input type="text" name="pwd" required style="width: 240px" lay-verify="required|password" placeholder="请输入密码"
+            <div class="layui-input-inline">
+                <input type="text" name="pwd" required style="width: 240px" lay-verify="required|password"
+                       placeholder="请输入密码"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
-        </div>
-        <%--            头像链接--%>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">头 像</label>
-            <div class="layui-input-block">
-                <input type="text" name="avatar" required style="width: 240px" lay-verify="required|avatar"
-                       placeholder="请输入头像链接"
-                       autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
-            </div>
-        </div>
-
-        <%--姓名--%>
-        <div class="layui-form-item ">
+            <%--姓名--%>
             <label class="layui-form-label" style="width: 100px">名 字</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="name" required value="" style="width: 240px" lay-verify="required"
                        placeholder="请输入姓名" autocomplete="off" class="layui-input">
             </div>
+
         </div>
+
 
         <%--           手机号--%>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">手 机 号</label>
-            <div class="layui-input-block">
-                <input type="text" name="phone" required style="width: 240px" lay-verify="required|phone" placeholder="请输入手机号"
+            <div class="layui-input-inline">
+                <input type="text" name="phone" required style="width: 240px" lay-verify="required|phone"
+                       placeholder="请输入手机号"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
-        </div>
-
-
-        <%--         生日--%>
-        <div class="layui-form-item">
+            <%--         生日--%>
             <label class="layui-form-label" style="width: 100px">生 日</label>
-            <div class="layui-input-block">
-                <input type="text" name="birthday" required style="width: 240px" lay-verify="required" placeholder="请选择生日"
+            <div class="layui-input-inline">
+                <input type="text" name="birthday" required style="width: 240px" lay-verify="required"
+                       placeholder="请选择生日"
                        autocomplete="off" class="layui-input" id="birthday">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
+
+
         <%--           身份证号--%>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">身份证号</label>
-            <div class="layui-input-block">
+            <div class="layui-input-inline">
                 <input type="text" name="idcard" required style="width: 240px" lay-verify="required|idcard"
                        placeholder="请输入身份证号"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
+            </div>
+
+            <label class="layui-form-label" style="width: 100px">用户权限</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="grant" value="shop" title="用户" checked lay-filter="userfilter">
+                <input type="radio" name="grant" value="admin" title="管理" lay-filter="adminfilter">
+            </div>
+        </div>
+
+        <%--隐藏标签 接受返回的图片路径值提交 --%>
+        <input type="hidden" name="userimage" class="image">
+        <%-- 图片上传--%>
+        <div class="layui-form-item">
+            <label class="layui-form-label " style="width: 100px">商品图片</label>
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="imgupload1">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" width="100px" height="100px" style="margin-left: 126px">
+                    <p id="demoText1" style="display: inline-block; margin-left: 109px"></p>
+                </div>
+            </div>
+        </div>
+
+
+        <%--商铺信息--%>
+
+
+        <div id="shopinfo">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top:3px;margin-left:3px">
+                <legend><h5 style="color: #009688">商铺信息</h5></legend>
+            </fieldset>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">商铺名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="shopname" required style="width: 240px" lay-verify="required"
+                           placeholder="请输入商铺名称"
+                           autocomplete="off" class="layui-input custom">
+                </div>
+
+                <label class="layui-form-label" style="width: 100px">商铺地址</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="shopaddress" required style="width: 240px" lay-verify="required"
+                           placeholder="请输入商铺地址"
+                           autocomplete="off" class="layui-input custom">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">经营者名字</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="managername" required style="width: 240px" lay-verify="required"
+                           placeholder="请输入经营者名字"
+                           autocomplete="off" class="layui-input custom">
+                </div>
+                <label class="layui-form-label" style="width: 100px">联系电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="shopphone" required style="width: 240px" lay-verify="required|phone"
+                           placeholder="请输入联系电话"
+                           autocomplete="off" class="layui-input custom">
+                </div>
+            </div>
+
+            <%--商铺图片--%>
+            <input type="hidden" name="shopimage" class="image">
+            <%-- 图片上传--%>
+            <div class="layui-form-item">
+                <label class="layui-form-label " STYLE="width: 100px">用户头像</label>
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="imgupload2">上传图片</button>
+                    <div class="layui-upload-list">
+                        <img class="layui-upload-img" id="demo2" width="100px" height="100px"
+                             style="margin-left: 126px">
+                        <p id="demoText2" style="display: inline-block; margin-left: 109px"></p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <%--            操作按钮--%>
         <div class="layui-form-item">
-            <div class="layui-input-block">
+            <div class="layui-input-block" style="margin-left:294px">
                 <button class="layui-btn" lay-submit lay-filter="save" id="datatran">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary" id="closebtn">重置</button>
             </div>
@@ -117,57 +180,53 @@
 </div>
 
 
-
-
 <%--弹出表单 更新用户--%>
 <div id="edit-main" style="display: none;">
     <form class="layui-form" id="edit-form" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">ID</label>
             <div class="layui-input-block">
-            <%--设置id只读--%>
-                <input type="text" name="modifid" required style="width: 240px" lay-verify="required" placeholder="请输入ID"
+                <%--设置id只读--%>
+                <input type="text" name="modifid" required style="width: 240px" lay-verify="required"
+                       placeholder="请输入ID"
                        autocomplete="off" class="layui-input" readonly="readonly">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">名 字</label>
             <div class="layui-input-block">
-                <input type="text" name="modifname" required style="width: 240px" lay-verify="required" placeholder="请输入名字"
+                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"
+                       placeholder="请输入名字"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
         <%--           手机号--%>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">手 机 号</label>
             <div class="layui-input-block">
-                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required|phone" placeholder="请输入手机号"
+                <input type="text" name="modifphone" required style="width: 240px" lay-verify="required|phone"
+                       placeholder="请输入手机号"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
-    <%--        昵称--%>
+        <%--        昵称--%>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">昵 称</label>
             <div class="layui-input-block">
-                <input type="text" name="modifnickname" required style="width: 240px" lay-verify="required" placeholder="请输入昵称"
+                <input type="text" name="modifnickname" required style="width: 240px" lay-verify="required"
+                       placeholder="请输入昵称"
                        autocomplete="off" class="layui-input">
-                <!-- <input type="hidden" name="id" style="width: 240px" autocomplete="off" class="layui-input"> -->
             </div>
         </div>
         <%--            操作按钮--%>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="update" id="datamodif">立即修改</button>
-                <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
 </div>
-
-
 
 
 <%--直接显示内容--%>
@@ -199,7 +258,6 @@
         </div>
     </div>
 </div>
-
 
 
 <input type="hidden" name="path" value="${pageContext.request.contextPath}">

@@ -109,13 +109,6 @@
 <div id="edit-main" style="display: none;">
     <form class="layui-form" id="edit-form" method="post">
         <div class="layui-form-item">
-            <%--           商品--%>
-            <%--            <label class="layui-form-label" style="width: 100px">商铺ID</label>--%>
-            <%--            <div class="layui-input-inline">--%>
-            <%--                <input type="text" name="modifname" required style="width: 240px" lay-verify="required"--%>
-            <%--                       placeholder="请输入商铺ID"--%>
-            <%--                       autocomplete="off" class="layui-input" readonly="readonly">--%>
-            <%--            </div>--%>
             <label class="layui-form-label" style="width: 100px">商 品 名</label>
             <div class="layui-input-inline">
                 <input type="text" name="modifname" required style="width: 240px" lay-verify="required"
