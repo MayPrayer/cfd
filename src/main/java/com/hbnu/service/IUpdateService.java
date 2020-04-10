@@ -2,6 +2,9 @@ package com.hbnu.service;
 
 import com.hbnu.dao.IOrderDetail;
 import com.hbnu.entity.Users;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.Date;
 
 /**
  * ClassName: IUpdate <br/>
@@ -21,7 +24,7 @@ public interface IUpdateService {
 
     int insertOneUser(Users user);
 
-    int updateOneUser(String name, String phone, String nickname, int id);
+    int updateOneUser(String account, String pwd, String name, Date birthday, String idcard, String avatar, String phone, String nickname, int id);
 
     /*
      * 商品服务
@@ -57,6 +60,8 @@ public interface IUpdateService {
 
     int delOneRole(int userid);
 
+    int updateOneRole( String name, int userid);
+
 
     /*
      * 商铺服务
@@ -65,7 +70,7 @@ public interface IUpdateService {
 
     int delOneShop(int userid);
 
-    int updateOneShop(String name, String logo, String position, String managername, String managerphoneid);
+    int updateOneShop(String name, String logo, String position, String managername, String managerphone,int userid);
 
 
 }

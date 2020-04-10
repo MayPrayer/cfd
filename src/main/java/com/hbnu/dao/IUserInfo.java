@@ -4,6 +4,7 @@ import com.hbnu.entity.Users;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,8 +39,8 @@ public interface IUserInfo {
     //   添加用户
     int insertOneUser(Users user);
 
-    //    更新用户
-    int updateOneUser(@Param("name") String name, @Param("phone") String phone, @Param("nickname") String nickname, @Param("id") int id);
+    //    更新用户  account=#{account},pwd=#{pwd},name=#{name},phone=#{phone},nickname=#{nickname},birthday=#{birthday},idcard=#{idcard},avatar=#{avatar} where id=#{id}
+    int updateOneUser(@Param("account") String account, @Param("pwd") String pwd, @Param("name") String name, @Param("birthday") Date birthday, @Param("idcard") String idcard, @Param("avatar") String avatar, @Param("phone") String phone, @Param("nickname") String nickname, @Param("id") int id);
 
     //根据id查询用户信息
     List<Users> selectInfoByUserid(int id);

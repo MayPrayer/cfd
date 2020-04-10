@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 /**
  * ClassName: IUpdateService <br/>
@@ -51,8 +53,8 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
-    public int updateOneUser(String name, String phone, String nickname,int id) {
-        int code=users.updateOneUser(name,phone,nickname,id);
+    public int updateOneUser(String account, String pwd, String name, Date birthady, String idcard, String avatar, String phone, String nickname, int id){
+        int code=users.updateOneUser(account, pwd,name, birthady,idcard,avatar, phone, nickname,id);
         System.out.println("更新数据返回值为"+code);
         return code;
     }
@@ -111,8 +113,10 @@ public class UpdateService implements IUpdateService {
         return roles.delOneRole(userid);
     }
 
-
-
+    @Override
+    public int updateOneRole(String name, int userid) {
+        return roles.updateOneRole(name,userid);
+    }
 
 
     @Override
@@ -126,8 +130,8 @@ public class UpdateService implements IUpdateService {
     }
 
     @Override
-    public int updateOneShop(String name, String logo, String position, String managername, String managerphoneid) {
-        return shops.updateOneShop(name,logo,position,managername,managerphoneid);
+    public int updateOneShop(String name, String logo, String position, String managername, String managerphone,int userid) {
+        return shops.updateOneShop(name,logo,position,managername,managerphone,userid);
     }
 
 

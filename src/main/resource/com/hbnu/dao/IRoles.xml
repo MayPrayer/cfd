@@ -14,4 +14,8 @@
     <delete id="delOneRole">
         delete  from  roles where userid=#{userid}
     </delete>
+
+    <update id="updateOneRole">
+        update roles set name=#{name} where userid=#{userid}
+    </update>
 </mapper>

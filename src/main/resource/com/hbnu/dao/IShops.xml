@@ -2,6 +2,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hbnu.dao.IShops">
+    <select id="selectShopinfoByUserid" resultType="com.hbnu.entity.Shops">
+        select  *  from shops where userid=#{userid}
+    </select>
+
     <select id="selectIdByUserId" resultType="int">
         select id from shops where userid=#{userid}
     </select>
@@ -15,6 +19,6 @@
     </delete>
 
     <update id="updateOneShop">
-        update  shops set name=#{name},logo=#{logo},position=#{position},managername=#{managername},managerphone=#{managerphone} where id=#{id}
+        update  shops set name=#{name},logo=#{logo},position=#{position},managername=#{managername},managerphone=#{managerphone} where userid=#{userid}
     </update>
 </mapper>

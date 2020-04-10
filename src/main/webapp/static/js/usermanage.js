@@ -12,6 +12,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
     var vifpath = path + "/user/vifaccount";
     var updatepath = path + "/updateuserinfo/updateuser";
     var uploadpath = path + "/curgoodsinfo/upload";
+    var extrainfopath=path+"/updateuserinfo/extrainfo"
 
 
     //没进行任何操作时的表格
@@ -115,11 +116,14 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
         if (layEvent === 'edit') {
             //实现编辑功能
             //填充表格数据
-
+            $("input[name='modifaccount']").val(data.account);
             $("input[name='modifname']").val(data.name);
             $("input[name='modifphone']").val(data.phone);
+            let d = new Date(data.birthday);
+            let birth = (d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());
+            $("input[name='modifbirthday']").val(birth);
             $("input[name='modifnickname']").val(data.nickname);
-            $("input[name='modifid']").val(data.id);
+            gainUserData(data.id);
             edituser();
 
         } else if (layEvent === 'del') {
@@ -154,7 +158,7 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
             title: "编辑用户",
             closebtn: false,
             shift: 2,
-            area: ['400px', '400px'],
+            area: ['800px', '700px'],
             shadeclose: true,
             // btn: ['新增', '取消'],
             // btnalign: 'c',
@@ -180,7 +184,9 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
     laydate.render({
         elem: '#birthday', //指定元素
     });
-
+    laydate.render({
+        elem: '#modifbirthday', //指定元素
+    });
 
     $("button[name='adduser']").on("click", onaddbtn);
 
@@ -359,21 +365,25 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
     /*
     * 监控新增用户单选框按钮 ,
     * */
-    form.on("radio(adminfilter)", function (data) {
-        alert("我执行了");
-        $("#shopinfo").hide();
-        //设置禁用,去除隐藏提交，防止提交
-        $(".custom").attr("disabled","disabled");
-        $(".custom").attr("lay-verify","");
+    form.on('select(grant)', function (data) {
+        alert("我执行了")
+        if (data.value=="shop"){
+            $("#shopinfo").show();
+            $(".custom").attr("lay-verify", "required");
+            $("input[name='shopphone']").attr("lay-verify", "required|phone");
+            $(".custom").removeAttr("disabled");
+            form.render();
+        }else{
+            $("#shopinfo").hide();
+            //设置禁用,去除隐藏提交，防止提交
+            $(".custom").attr("disabled", "disabled");
+            $(".custom").attr("lay-verify", "");
+            form.render();
+        }
     });
 
-    form.on("radio(userfilter)", function (data) {
-        alert("我执行了");
-        $("#shopinfo").show();
-        $(".custom").attr("lay-verify","required");
-        $("input[name='shopphone']").attr("lay-verify","required|phone");
-        $(".custom").removeAttr("disabled");
-    });
+
+
 
 
     // 图片上传 并将路径(/upload/2020-03-07/b8682757-b5ce-453f-942d-798af03d3ae4.jpg)存入隐藏域
@@ -445,7 +455,213 @@ layui.use(['element', 'layer', 'form', 'jquery', 'table', 'laydate', 'util', 'up
     });
 
 
+    /*
+    * ajax 获取编辑显示信息
+    * */
+    function gainUserData(userid) {
+        let datas={userid};
+        $("input[name='userid']").val(userid);
+        $.ajax({
+         //ajax的url请求不会在url显示
+         url: extrainfopath,
+         data: datas,
+         type: "POST",
+         //不指定dataType 会自动获取 返回值（根据对应的类型）
+         success: function (result) {
+             alert("我被执行了！");
+             if (result.code == '0') {
+                 $("input[name='modifpwd']").val(result.data.userinfo.pwd);
+                 $("input[name='modifidcard']").val(result.data.userinfo.idcard);
+                 $("input[name='modifuserimage']").val(result.data.userinfo.avatar)
+                 $('#demo3').attr('src', result.data.userinfo.avatar);
+                 console.log("result结果为"+result.data.shopinfo)
+                 if ((typeof result.data.shopinfo)!="undefined"){
+                     //选中用户商铺权限
+                     $("option[value='modifshop']").prop("selected",true);
+                     form.render();
+                     $("input[name='modifshopname']").val(result.data.shopinfo.name);
+                     $("input[name='modifshopaddress']").val(result.data.shopinfo.position);
+                     $("input[name='modifmanagername']").val(result.data.shopinfo.managername);
+                     $("input[name='modifshopphone']").val(result.data.shopinfo.managerphone);
 
+                     $("input[name='modifshopimage']").val(result.data.shopinfo.logo);
+                     $('#demo4').attr('src', result.data.shopinfo.logo);
+
+                 }else{
+                     if ((typeof result.data.admin)!="undefined"){
+                         //选中管理员权限
+                         $("option[value='modifadmin']").prop("selected",true);
+                         $("#shopinfo2").hide();
+                         //设置禁用,去除隐藏提交，防止提交
+                         $(".custom").attr("disabled", "disabled");
+                         $(".custom").attr("lay-verify", "");
+
+                         form.render();
+                     }else{
+                         $("option[value='modifuser']").prop("selected",true);
+                         $("#shopinfo2").hide();
+                         //设置禁用,去除隐藏提交，防止提交
+                         $(".custom").attr("disabled", "disabled");
+                         $(".custom").attr("lay-verify", "");
+                         form.render();
+                     }
+
+                 }
+
+             } else {
+                 layer.msg(result.message);
+                 //    获取用户信息错误
+             }
+         },
+         error: function () {
+             layer.msg("当前连接数偏多，请稍后重试！");
+         }
+     }
+ );
+    }
+
+
+
+    /*
+    * 监听权限
+    * */
+    form.on('select(modifgrant)', function (data) {
+        alert("我执行了")
+        if (data.value=="modifshop"){
+            $("#shopinfo2").show();
+            $(".custom").attr("lay-verify", "required");
+            $("input[name='modifshopphone']").attr("lay-verify", "required|phone");
+            $(".custom").removeAttr("disabled");
+            //清空数据
+            $(".custom").val("");
+            form.render();
+        }else{
+            $("#shopinfo2").hide();
+            //设置禁用,去除隐藏提交，防止提交
+            $(".custom").attr("disabled", "disabled");
+            $(".custom").attr("lay-verify", "");
+            //清空数据
+            $(".custom").val("");
+            form.render();
+        }
+    });
+
+
+
+    /*
+    *图片上传
+    * */
+    var uploadInst3 = upload.render({
+        elem: '#modifimgupload3'
+        , url: uploadpath
+        , accept: 'images'
+        , size: 50000
+        , before: function (obj) {
+            obj.preview(function (index, file, result) {
+                $('#demo3').attr('src', result);
+            });
+        }
+        , done: function (res) {
+            //如果上传失败
+            if (res.code > 0) {
+                return layer.msg('上传失败');
+            }
+            //上传成功 提示信息
+            var demoText3 = $('#demoText3');
+            demoText3.html('<span style="color: #4cae4c;">上传成功</span>');
+            //获取隐藏域 ，赋值操作 ，控制台显示
+            var fileupload3 = $("input[name='modifuserimage']");
+            fileupload3.attr("value", res.data.src);
+            console.log(fileupload3.attr("value"));
+        }
+        , error: function () {
+            //演示失败状态，并实现重传
+            var demoText3 = $('#demoText3');
+            demoText3.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText3.find('.demo-reload').on('click', function () {
+                uploadInst3.upload();
+            });
+        }
+    });
+
+    var uploadInst4 = upload.render({
+        elem: '#modifimgupload4'
+        , url: uploadpath
+        , accept: 'images'
+        , size: 50000
+        , before: function (obj) {
+            obj.preview(function (index, file, result) {
+                $('#demo4').attr('src', result);
+            });
+        }
+        , done: function (res) {
+            //如果上传失败
+            if (res.code > 0) {
+                return layer.msg('上传失败');
+            }
+            //上传成功 提示信息
+            var demoText4 = $('#demoText4');
+            demoText4.html('<span style="color: #4cae4c;">上传成功</span>');
+            //获取隐藏域 ，赋值操作 ，控制台显示
+            var fileupload4 = $("input[name='modifshopimage']");
+            fileupload4.attr("value", res.data.src);
+            console.log(fileupload4.attr("value"));
+        }
+        , error: function () {
+            //演示失败状态，并实现重传
+            var demoText4 = $('#demoText4');
+            demoText4.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+            demoText4.find('.demo-reload').on('click', function () {
+                uploadInst4.upload();
+            });
+        }
+    });
+
+
+
+    //验证用户名是否存在
+    $("input[name='modifaccount']").blur(function () {
+            let account = $("input[name='modifaccount']").val();
+            $.ajax({
+                    //ajax的url请求不会在url显示
+                    url: vifpath,
+                    data: {account: account},
+                    type: "POST",
+                    //不指定dataType 会自动获取 返回值（根据对应的类型）
+                    success: function (result) {
+                        alert("我被执行了！");
+                        if (result.code == '404') {
+                            //    提示用户名输入错误
+
+                            layer.tips("账户名已存在", 'input[name=\'account\']', {
+                                tips: [2, '#f41616'], //设置tips方向和颜色 类型：Number/Array，默认：2 tips层的私有参数。支持上右下左四个方向，通过1-4进行方向设定。如tips: 3则表示在元素的下面出现。有时你还可能会定义一些颜色，可以设定tips: [1, '#c00']
+                                tipsMore: false, //是否允许多个tips 类型：Boolean，默认：false 允许多个意味着不会销毁之前的tips层。通过tipsMore: true开启
+                                time: 2000  //2秒后销毁，还有其他的基础参数可以设置。。。。这里就不添加了
+                            });
+                            //    将提交按钮变黑
+                            $("#update").attr('disabled', true);
+                            $("#update").css({'background-color': '#808080'});
+
+
+                        } else {
+                            //    提示用户名合法成功
+                            layer.tips("账户名合法", 'input[name=\'account\']', {
+                                tips: [2, '#11ae11'],
+                                tipsMore: false,
+                                time: 2000
+                            });
+                            $("#update").attr('disabled', false);
+                            $("#update").css({'background-color': '#009688'});
+
+                        }
+                    },
+                    error: function () {
+                        layer.msg("当前连接数偏多，请稍后重试！");
+                    }
+                }
+            );
+        }
+    )
 
 
 

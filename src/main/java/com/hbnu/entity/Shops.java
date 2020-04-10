@@ -24,6 +24,8 @@ public class Shops {
     private String blicense;
     private String foodblicense ;
     private String shoptype ;
+    private String managername;
+    private String managerphone;
 
 
     public int getId() {
@@ -122,6 +124,21 @@ public class Shops {
         this.shoptype = shoptype;
     }
 
+    public String getManagername() {
+        return managername;
+    }
+
+    public void setManagername(String managername) {
+        this.managername = managername;
+    }
+
+    public String getManagerphone() {
+        return managerphone;
+    }
+
+    public void setManagerphone(String managerphone) {
+        this.managerphone = managerphone;
+    }
 
     @Override
     public String toString() {
@@ -138,6 +155,8 @@ public class Shops {
                 ", blicense='" + blicense + '\'' +
                 ", foodblicense='" + foodblicense + '\'' +
                 ", shoptype='" + shoptype + '\'' +
+                ", managername='" + managername + '\'' +
+                ", managerphone='" + managerphone + '\'' +
                 '}';
     }
 }

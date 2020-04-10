@@ -84,4 +84,10 @@ public interface IQryService {
     List<Shipaddress> selectaddrById(int id);
 
     PageInfo selectlikeOrders(int pageNum, int pageSize, int shopid, Date startday, Date enday);
+
+
+    /**
+     * 查询商铺
+     */
+    Shops selectShopinfoByUserid(int userid);
 }

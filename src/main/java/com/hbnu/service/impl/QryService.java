@@ -179,6 +179,11 @@ public class QryService implements IQryService {
     }
 
     @Override
+    public Shops selectShopinfoByUserid(int userid) {
+        return shops.selectShopinfoByUserid(userid);
+    }
+
+    @Override
     public List<OrderDetail> selectOrderGood(long id) {
         return  orderdetail.selectOrderGood(id);
     }

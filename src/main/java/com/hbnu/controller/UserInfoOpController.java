@@ -3,32 +3,26 @@ package com.hbnu.controller;
 import com.github.pagehelper.PageInfo;
 import com.hbnu.entity.Result;
 import com.hbnu.entity.Roles;
+import com.hbnu.entity.Shops;
 import com.hbnu.entity.Users;
 import com.hbnu.service.IQryService;
 import com.hbnu.service.IUpdateService;
-import com.qiniu.common.QiniuException;
-import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.Region;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.util.Auth;
-import org.apache.commons.fileupload.disk.DiskFileItem;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -70,12 +64,8 @@ public class UserInfoOpController {
         }
 
 //       否则查询
-        Users user = null;
-        try {
+            Users user = null;
             user = iqs.selectByAccountAndPassword(account, oldpassword);
-        } catch (Exception e) {
-            e.getStackTrace();
-        } finally {
             if (user == null) {
                 return Result.failed("用户名或原始密码输入错误！");
             }
@@ -85,7 +75,7 @@ public class UserInfoOpController {
             return Result.success();
         }
 
-    }
+
 
     @RequestMapping("/showpersoninfo")
     public String showPersonInfo(HttpSession session, Model model) {
@@ -158,7 +148,7 @@ public class UserInfoOpController {
     public Result addUser(@RequestParam("account") String account, @RequestParam("nickname") String nickname, @RequestParam("pwd") String pwd, @RequestParam("name") String name, @RequestParam("phone") String phone, @RequestParam("birthday") String birthday,
                           @RequestParam("idcard") String idcard, @RequestParam("grant") String grant, @RequestParam("userimage") String userimage, @RequestParam("shopname") String shopname, @RequestParam("shopaddress") String shopaddress, @RequestParam("shopphone") String shopphone, @RequestParam("shopimage") String shopimage
             , @RequestParam("managername") String managername
-    ) {
+    ) throws ParseException {
 
 
         Users user = new Users();
@@ -171,12 +161,9 @@ public class UserInfoOpController {
         user.setIdcard(idcard);
         System.out.println("生日为" + birthday);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Date birth = null;
-        try {
-            birth = df.parse(birthday);
-        } catch (Exception e) {
 
-        }
+        Date  birth = df.parse(birthday);
+
         user.setBirthday(birth);
         int mesgcode = ius.insertOneUser(user);
         //            查询用户id
@@ -189,10 +176,13 @@ public class UserInfoOpController {
             ius.insertOneRole(userid, "ROLE_SHOP");
             ius.addOneShop(userid, shopname, shopimage, shopaddress, managername, shopphone);
 
-        } else {
+        }
+
+        if(grant.equals("admin")){
             //创建管理员
             ius.insertOneRole(userid, "ROLE_ADMIN");
         }
+
         if (mesgcode == 1) {
             Result result = Result.success();
             result.setMessage("添加用户成功！");
@@ -204,12 +194,97 @@ public class UserInfoOpController {
     //   编辑用户信息
     @RequestMapping("/updateuser")
     @ResponseBody
-    public Result editUser(@RequestParam("modifname") String name, @RequestParam("modifphone") String phone, @RequestParam("modifnickname") String nickname, @RequestParam("modifid") int id) {
-        ius.updateOneUser(name, phone, nickname, id);
+    public Result editUser(@RequestParam("userid") int userid,@RequestParam("modifaccount") String account, @RequestParam("modifnickname") String nickname, @RequestParam("modifpwd") String pwd, @RequestParam("modifname") String name, @RequestParam("modifphone") String phone, @RequestParam("modifbirthday") String birthday,
+                           @RequestParam("modifidcard") String idcard, @RequestParam("grant") String grant, @RequestParam("modifuserimage") String userimage, @RequestParam("modifshopname") String shopname, @RequestParam("modifshopaddress") String shopaddress, @RequestParam("modifshopphone") String shopphone, @RequestParam("modifshopimage") String shopimage
+            , @RequestParam("modifmanagername") String managername) throws ParseException {
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date  birth = df.parse(birthday);
+//首先查询当前权限
+       Roles role=  iqs.selectByUserid(userid);
+       //普通用户
+       if (role==null){
+           if (grant.equals("modifuser")){
+               //只修改用户
+               ius.updateOneUser(account, pwd,name, birth,idcard,userimage, phone, nickname,userid);
+           }else if (grant.equals("modifadmin")){
+               //增加一个管理角色
+               ius.insertOneRole(userid,"ROLE_ADMIN");
+           }else{
+               //增加一个商铺角色
+               ius.insertOneRole(userid,"ROLE_ADMIN");
+               //创建一个商铺
+               ius.addOneShop(userid,shopname,shopimage,shopaddress,managername,shopphone);
+           }
+       }else {
+           //商铺用户
+           if (role.getName().equals("ROLE_SHOP")) {
+               if (grant.equals("modifuser")) {
+                   //清除商铺 ，商铺角色
+                   ius.delOneShop(userid);
+                   ius.delOneRole(userid);
+               } else if (grant.equals("modifadmin")) {
+                   //将角色修改为管理
+                   ius.updateOneRole("ROLE_ADMIN", userid);
+               } else {
+                   //修改商铺信息
+                   ius.updateOneShop(shopname, shopimage, shopaddress, managername, shopphone,userid);
+               }
+           }
+
+           if (role.getName().equals("ROLE_ADMIN")) {
+               if (grant.equals("modifuser")) {
+                   //删除管理角色
+                   ius.delOneRole(userid);
+               } else if (grant.equals("modifadmin")) {
+                   //修改用户信息
+                   ius.updateOneUser(account, pwd, name, birth, idcard, userimage, phone, nickname, userid);
+               } else {
+                   //修改角色为商铺，并且创建一个商铺
+                   ius.updateOneRole("ROLE_SHOP", userid);
+                   ius.addOneShop(userid, shopname, shopimage, shopaddress, managername, shopphone);
+               }
+           }
+
+       }
         Result result = Result.success();
         result.setMessage("更新用户成功！");
         return result;
     }
+
+//获取其他编辑显示用户信息
+    @RequestMapping("/extrainfo")
+    @ResponseBody
+    public Result getExtraInfo(@RequestParam("userid") int userid) {
+//        获取用户信息
+        List<Users> users = iqs.selectInfoByUserid(userid);
+        Users user = users.get(0);
+//        查询角色s信息
+        Roles role=null;
+        try {
+            role = iqs.selectByUserid(userid);
+        }catch ( Exception e){
+            return Result.failed("查询失败");
+        }
+        Map<String,Object> map = new HashMap();
+        map.put("userinfo",user);
+        if (role==null){
+            map.put("user",true);
+        }else{
+            if (role.getName().equals("ROLE_SHOP")){
+                Shops shop =  iqs.selectShopinfoByUserid(userid);
+                map.put("shopinfo",shop);
+            }
+            if (role.getName().equals("ROLE_ADMIN")){
+                map.put("admin",true);
+            }
+        }
+        Result result = Result.success();
+        result.setMessage("显示额外信息！");
+        result.setData(map);
+        return result;
+    }
+
 
 
 }

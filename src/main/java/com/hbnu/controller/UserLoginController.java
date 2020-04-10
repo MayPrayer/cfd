@@ -46,9 +46,13 @@ public class UserLoginController {
         Users user = (Users) session.getAttribute("userinfo");
 
 //  查询角色 ，根据userid查询角色
-        Roles role = iqs.selectByUserid(user.getId());
-        if (role.getName().equals("ROLE_ADMIN")) {
-            request.getSession().setAttribute("admin", role);
+        Roles role = null;
+
+            role = iqs.selectByUserid(user.getId());
+        if (role != null) {
+            if (role.getName().equals("ROLE_ADMIN")) {
+                request.getSession().setAttribute("admin", role);
+            }
         }
         model.addAttribute("user", user);
         return "admin";
@@ -85,30 +89,37 @@ public class UserLoginController {
         try {
             user = iqs.selectByAccountAndPassword(account, pwd);
         } catch (Exception e) {
-            e.getStackTrace();
-        }
-        if (user == null) {
             return Result.failed("用户名或密码不正确！");
-        } else {
-            System.out.println("返回数据");
+        }
+
+//        查询角色信息
+        Roles role = null;
+        try {
+            role = iqs.selectByUserid(user.getId());
+        } catch (Exception e) {
+            return Result.failed("用户名或密码不正确！");
+        }
+        if (role == null) {
+            return Result.failed("用户名或密码不正确！");
+        }
+        if (role.getName().equals("ROLE_SHOP")) {
             //查询商铺id 不为0则保存到session
             int shopid = 0;
             try {
                 shopid = iqs.selectIdByUserId(user.getId());
             } catch (Exception e) {
-                System.out.println("无商铺");
-            } finally {
-                if (shopid != 0) {
-                    request.getSession().setAttribute("shopid", shopid);
-                }
-
-                //           设置session
-                request.getSession().setAttribute("userinfo", user);
-                return Result.success();
+                return Result.failed("用户名或密码不正确");
             }
-
+            if (shopid != 0) {
+                request.getSession().setAttribute("shopid", shopid);
+            }
         }
+
+        //           设置session
+        request.getSession().setAttribute("userinfo", user);
+        return Result.success();
     }
+
 
     //   点击菜单栏内容跳转到修改密码页面
     @RequestMapping("/modifypwd")
@@ -126,7 +137,6 @@ public class UserLoginController {
         System.out.println("user的信息为\n" + users);
         if (users.isEmpty()) {
             return Result.success();
-
         } else {
             return Result.failed("用户已存在");
         }

@@ -20,4 +20,5 @@ public interface IRoles {
 
     int delOneRole(int userid);
 
+    int updateOneRole(@Param("name") String name,@Param("userid") int userid);
 }

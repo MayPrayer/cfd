@@ -45,7 +45,7 @@
 
     <!--修改用户信息 -->
     <update id="updateOneUser" parameterType="com.hbnu.entity.Users">
-        update  users set name=#{name},phone=#{phone},nickname=#{nickname} where id=#{id}
+        update  users set account=#{account},pwd=#{pwd},name=#{name},phone=#{phone},nickname=#{nickname},birthday=#{birthday},idcard=#{idcard},avatar=#{avatar} where id=#{id}
     </update>
 
 
