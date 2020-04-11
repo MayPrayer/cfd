@@ -24,7 +24,7 @@ public interface IShops {
 
     int delOneShop(int userid);
 
-    int updateOneShop(@Param("name")String name,@Param("logo")String logo,@Param("position")String position,@Param("managername")String managername,@Param("managerphoneid")String managerphone ,@Param("userid")int userid);
+    int updateOneShop(@Param("name")String name,@Param("logo")String logo,@Param("position")String position,@Param("managername")String managername,@Param("managerphone")String managerphone ,@Param("userid")int userid);
 
 
 

@@ -13,8 +13,8 @@
     </select>
 
     <!-- 查询当前商铺收入总数-->
-    <select id="selectCountIncome"  resultType="double">
-    select  sum(o.amount) from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
+    <select id="selectCountIncome"  resultType="Double">
+    select  IFNULL(sum(o.amount),0.0)       from orders o ,users u ,shops s  where u.id=s.userid  and o.shopid = s.id and u.id =#{id}
     </select>
 
 

@@ -224,10 +224,12 @@ public class UserInfoOpController {
                    ius.delOneShop(userid);
                    ius.delOneRole(userid);
                } else if (grant.equals("modifadmin")) {
-                   //将角色修改为管理
+                   //清除商铺 ，将角色修改为管理
+                   ius.delOneShop(userid);
                    ius.updateOneRole("ROLE_ADMIN", userid);
                } else {
-                   //修改商铺信息
+                   //修改用戶，修改商铺信息
+                   ius.updateOneUser(account, pwd,name, birth,idcard,userimage, phone, nickname,userid);
                    ius.updateOneShop(shopname, shopimage, shopaddress, managername, shopphone,userid);
                }
            }
