@@ -60,8 +60,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">商品分类</label>
             <div class="layui-input-inline">
-                <input type="radio" name="goodstype" value="fruit" title="水果"  checked>
-                <input type="radio" name="goodstype" value="fresh" title="生鲜" >
+                <input type="radio" name="goodstype" value="水果" title="水果"  checked>
+                <input type="radio" name="goodstype" value="生鲜" title="生鲜" >
             </div>
             <label class="layui-form-label" style="width: 100px">商品状态</label>
             <div class="layui-input-inline">

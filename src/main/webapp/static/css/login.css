@@ -1,3 +1,9 @@
+body{
+    background-image: url(../img/login-back.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+
 .container{
     width: 420px;
     height: 320px;
@@ -55,4 +61,8 @@
 }
 a:hover{
     text-decoration: underline;
+}
+
+.slider-item {
+    width: 295px;
 }

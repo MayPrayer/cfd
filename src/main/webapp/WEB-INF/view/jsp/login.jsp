@@ -13,11 +13,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/login.css">
     <script src="${pageContext.request.contextPath}/static/js/jquery-1.10.2.min.js"></script>
     <script src="${pageContext.request.contextPath}/static/layui/layui.js"></script>
-    <script src="${pageContext.request.contextPath}/static/js/login.js"></script>
 </head>
 <body>
 <form class="layui-form" method="post">
-    <div class="container">
+    <div class="container" >
 
         <!--用户登录图片-->
         <div class="layui-form-mid layui-word-aux">
@@ -40,14 +39,14 @@
             </div>
             <!--验证码框-->
         </div>
-        <%--        <div class="layui-form-item">--%>
-        <%--            <label class="layui-form-label">验证码</label>--%>
-        <%--            <div class="layui-input-inline">--%>
-        <%--                <input type="text" name="title" required lay-verify="required" placeholder="请输入验证码" autocomplete="off"--%>
-        <%--                       class="layui-input verity">--%>
-        <%--            </div>--%>
 
-        <%--        </div>--%>
+        <div class="layui-form-item">
+            <label class="layui-form-label">滑动验证</label>
+            <div class="layui-input-block">
+                <div id="slider"></div>
+            </div>
+        </div>
+
 
         <!--登录按钮及提示-->
         <div class="layui-form-item">
@@ -55,11 +54,64 @@
                 <button class="layui-btn" lay-submit lay-filter="logincfd">登陆</button>
             </div>
         </div>
-        <!--忘记密码与立即注册跳转链接-->
-        <%--        <a href="" class="font-set">忘记密码?</a> <a href="" class="font-set">立即注册</a>--%>
     </div>
 </form>
+<script >
 
+    layui.config({
+        version: 1,
+        base: '${pageContext.request.contextPath}/static/layui/sliderVerify/'
+    }).use(['element', 'layer', 'form','sliderVerify'], function () {
+            var form = layui.form;
+            var layer = layui.layer;
+            var sliderVerify = layui.sliderVerify;
+
+//渲染滑动验证
+            var slider = sliderVerify.render({
+                elem: '#slider',
+                max:'70',
+
+            });
+
+            form.on('submit(logincfd)', function (data) {
+                var datas = data.field;
+                if(slider.isOk()){//用于表单验证是否已经滑动成功
+                    alert("滑动执行了")
+                    $.ajax({
+                            //ajax的url请求不会在url显示
+                            url: "verify",
+                            data: datas,
+                            type: "POST",
+                            //不指定dataType 会自动获取 返回值（根据对应的类型）
+                            success: function (result) {
+                                alert("我被执行了");
+                                if (result.code=='0') {
+                                    //   跳转页面
+                                    window.location.href = "index"
+                                } else {
+                                    layer.msg(result.message);
+                                    //    提示密码或用户名错误
+                                }
+                                // window.location.href="main";
+                            },
+                            error: function () {
+                                layer.msg("当前连接数偏多，请稍后重试！");
+                            }
+                        }
+                    );
+                }else{
+                    layer.msg("请先通过滑块验证");
+                }
+
+                var datas = data.field;
+
+                return false;
+            })
+        }
+    )
+
+
+</script>
 
 </body>
 </html>
